@@ -1,0 +1,267 @@
+body, html {
+    height: 100%;
+    width: 100vw;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: #f0f0f0;
+    font-family: Arial, sans-serif;
+}
+
+html.fullScreenMobile ,
+body.fullScreenMobile {
+    height: calc(150%);
+}
+
+#mobileFullScreenFillerBottom,
+#mobileFullScreenFillerTop {
+    height: 0%;
+    transition: height 0.5s;
+}
+
+#mobileFullScreenFillerTop.fullScreenMobile {
+    height: 37%;
+    transition: height 0.5s;
+}
+
+#mobileFullScreenFillerBottom.fullScreenMobile {
+    height: 13%;
+    transition: height 0.5s;
+}
+
+body.night-mode {
+    background: #111;
+    color: #fff;
+}
+
+#mobileFullScreenFiller {
+    height: 0px;
+    transition: height 0.5s;
+}
+
+#mobileFullScreenFiller.fullScreenMobile {
+    height: 400px;
+}
+
+.text-wrapper {
+    /* height & width are defined and manipulated by TextScroller.js */
+    margin: 20px 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    mask-image: linear-gradient(to right, transparent 2%,  black 25%, black 75%, transparent 98%);
+    border: #000 solid 2px;
+}
+
+.text-wrapper.night-mode {
+    border-color: #fff;
+}
+
+#text {
+    white-space: nowrap;
+    position: absolute;
+    left: 50%;
+    cursor: pointer;
+    padding: 0; 
+    font-family: "Noto Serif TC", serif;
+    /* font-size is defined and manpulated by TextScroller.js   */
+}
+
+#text.night-mode {
+    font-weight: bold;
+}
+
+.button-panel {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: nowrap;
+    margin: 0px 10px;
+    width: 90%;
+    overflow-x: auto;
+}
+
+.button-panel textarea {
+    width: 0px;
+    height: 50px;
+    margin: 0;
+    padding: 0px;
+    border: none;
+    box-sizing: border-box;
+    transition: width 0.3s;
+}
+
+.button-panel textarea.visible {
+    width: 75px;
+    padding: 5px 0px 0px 5px;
+    margin: 2.5px;
+    font-size: 16px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    transition: width 0.2s;
+}
+
+body.night-mode textarea{
+    background-color: #222;
+    color: #bbb;
+}
+
+.button-panel::-webkit-scrollbar {
+    width: 0px;
+}
+
+.button-panel textarea::-webkit-scrollbar {
+    width: 0px;
+}
+
+.button-panel button {
+    position: relative;
+    margin: 2.5px;
+    width: 50px;
+    height: 50px;
+    box-sizing: border-box;
+    background-color: #111;
+    border: none;
+    border-radius: 4px;
+    touch-action: manipulation;
+    cursor: pointer;
+}
+
+body.night-mode button {
+    border: #eee 2px solid;
+}
+
+.button-panel button:hover {
+    background-color: #666;
+    box-shadow: 0 0px 8.5px #111;
+    border: #eee 2px solid;
+}
+
+.button-panel button:hover.night-mode {
+    /* currently for nightMode */
+    box-shadow: 0 0px 8.5px #eee; 
+    background-color: #444;
+}
+
+.button-panel img {
+    pointer-events: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 25px;
+    height: 25px;
+}
+
+.nested-buttons {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: left;
+
+    padding: 0px 10px 0px 5px;
+    
+    overflow-x: auto;
+    overflow-y: hidden;
+    
+    height: 75px;
+
+    width: fit-content;
+    max-width: (90% - 100px);
+    mask-image: linear-gradient(to right, transparent 1%, black 5%, black 95%, transparent 98%);
+    transition: width 0.5s;
+}
+
+.nested-buttons.visible {
+    transition: width 0.5s;
+}
+
+.nested-buttons::-webkit-scrollbar {
+    background-color: #222;
+    height: 0px;
+}
+
+.nested-buttons::-webkit-scrollbar-thumb {
+    background-color: #111;
+    border: #eee 2px solid;
+    border-radius: 10px;
+    height: 6px;
+}
+
+.toggle-button-container {
+    position: relative;
+    width: fit-content;
+    display: inline-block;
+    white-space: normal;
+}
+
+.hidden {
+    display: none;
+}
+
+.hidden-setting {
+    visibility: hidden;
+    opacity: 0;
+    width: 0px;
+    transition: width 0.5s, visibility 0.5s, opacity 0.5s;
+}
+
+.hidden-setting.visible {
+    visibility: visible;
+    opacity: 1;
+    width: 55px;
+    transition: width 0.5s, visibility 0.5s, opacity 0.5s;
+}
+
+#pasteText.hidden-setting.visible {
+    width: 50px;
+    padding: 5px;
+}
+
+#pasteText.hidden-setting {
+    width: 0px;
+    padding: 0px;
+}
+
+.button-divider {
+    position: relative;
+    height: 50px;
+    width: 20px;
+    box-sizing: border-box;
+    transform: scaleY(150%);
+    mask-image: linear-gradient(to top, transparent 5%, #111 50%, transparent 95%);
+}
+
+#externalDivider {
+    padding-left: 5px;
+}
+
+#externalDivider.hidden {
+    padding-left: 0px;
+}
+
+.hidden-setting .button-divider,
+.hidden-setting .button-divider img {
+    width: 0px;
+}
+
+.hidden-setting.visible .button-divider {
+    width: 25px;
+}
+
+.hidden-setting.visible .button-divider img {
+    width: 25px;
+}
+
+.unselectable {
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently supported by Chrome, Opera and Safari, and Firefox 69+ */
+}
