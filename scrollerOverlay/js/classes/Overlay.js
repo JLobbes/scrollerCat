@@ -1,4 +1,4 @@
-class Application {
+class Overlay {
     constructor() {
         this.isIphone = false;
         this.queryForIphone();

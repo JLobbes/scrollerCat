@@ -10,15 +10,15 @@
 // import { Application } from 'Application.js';
 // import { TextScroller } from 'TextScroller.js;
 
-const readerApp = new Application();
+const scrollerOverlay = new Overlay();
 
-readerApp.prepareTextScroller = function() {
+scrollerOverlay.prepareTextScroller = function() {
     this.textScroller = new TextScroller(this.isIphone);
     this.textScroller.setInitialText(loadUpText);
     this.textScroller.handleUserTextInput();
 }
 
-readerApp.prepareSettingsPanel = function() {
+scrollerOverlay.prepareSettingsPanel = function() {
     this.settingsPanel = settingsPanel;
     this.settingsPanel.loadButtonPanelHTML();
     this.settingsPanel.addEventListeners();
@@ -62,7 +62,7 @@ readerApp.prepareSettingsPanel = function() {
     this.settingsPanel.buttonContainers['scrollerBoxHeight'].cycleButton();
 
     const keypressPowerButton = this.settingsPanel.buttonContainers['keypressPower'];
-    if(!readerApp.isIphone) {
+    if(!scrollerOverlay.isIphone) {
         keypressPowerButton.mainFunction = () => {
             const indexOfCurrentState = keypressPowerButton.indexOfCurrentState;
             const newStateValue = keypressPowerButton.states[indexOfCurrentState]['value']; 
@@ -91,21 +91,9 @@ readerApp.prepareSettingsPanel = function() {
     };
     this.settingsPanel.buttonContainers['autoScroll'].cycleButton();
 
-    const fullScreenButton = readerApp.settingsPanel.buttonContainers['fullScreen'];
-    const fullScreenStyler = new FullScreenStyler('mobileFullScreenFillerTop', 'mobileFullScreenFillerBottom', fullScreenButton);
-    this.settingsPanel.buttonContainers['fullScreen'].mainFunction = () => {
-        const indexOfCurrentState = fullScreenButton.indexOfCurrentState;
-        const newStateValue = fullScreenButton.states[indexOfCurrentState]['value']; 
-        if(readerApp.isIphone) {
-            fullScreenStyler.toggleFullScreenMobile(newStateValue);
-        } else {
-            fullScreenStyler.toggleFullScreen(newStateValue);
-        }
-    };
-
 }
 
-readerApp.prepareToolbar = function() {
+scrollerOverlay.prepareToolbar = function() {
     this.toolbar = toolbar; 
     this.toolbar.loadButtonPanelHTML(); 
     this.toolbar.addEventListeners();
@@ -137,10 +125,10 @@ readerApp.prepareToolbar = function() {
     };
 }
 
-readerApp.startApplication = function() {
+scrollerOverlay.startApplication = function() {
     this.prepareTextScroller();
     this.prepareSettingsPanel();
     this.prepareToolbar();
 }
 
-readerApp.startApplication();
+scrollerOverlay.startApplication();

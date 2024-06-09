@@ -197,22 +197,5 @@ settingsPanel.buttonContainers['autoScroll'].addState(
     { scrollSpeed: 0.5, frameRate: 5, autoScrollTransition: 'transform linear' }, // 'autoScrollSlow'
 );
 
-settingsPanel.createToggleButton(
-    'fullScreen', 
-    'nextState',
-    false // State saved to local storage
-);
-settingsPanel.buttonContainers['fullScreen'].addState(
-    'fullScreenOff', 
-    'images/smaller-screen-icon.png',
-    'Icon of arrows inwards to inidicate closing of screen mode',
-    false, // 'autoScrollFast'
-);
-settingsPanel.buttonContainers['fullScreen'].addState(
-    'fullScreenOn', 
-    'images/full-screen-icon.png',
-    'Icon of arrows out to inidicate full screen mode',
-    true, // 'autoScrollFast'
-);
 
 // export { settingsPanel }

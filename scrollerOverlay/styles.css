@@ -1,6 +1,15 @@
 body, html {
     height: 100%;
     width: 100vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#scrollerOverlayContainer {
+    height: 75%;
+    width: 75%;
     margin: 0;
     display: flex;
     flex-direction: column;
@@ -8,41 +17,14 @@ body, html {
     align-items: center;
     background: #f0f0f0;
     font-family: Arial, sans-serif;
+    border: #111 solid 5px;
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
 }
 
-html.fullScreenMobile ,
-body.fullScreenMobile {
-    height: calc(150%);
-}
-
-#mobileFullScreenFillerBottom,
-#mobileFullScreenFillerTop {
-    height: 0%;
-    transition: height 0.5s;
-}
-
-#mobileFullScreenFillerTop.fullScreenMobile {
-    height: 37%;
-    transition: height 0.5s;
-}
-
-#mobileFullScreenFillerBottom.fullScreenMobile {
-    height: 13%;
-    transition: height 0.5s;
-}
-
-body.night-mode {
+#scrollerOverlayContainer.night-mode {
     background: #111;
     color: #fff;
-}
-
-#mobileFullScreenFiller {
-    height: 0px;
-    transition: height 0.5s;
-}
-
-#mobileFullScreenFiller.fullScreenMobile {
-    height: 400px;
 }
 
 .text-wrapper {
@@ -106,7 +88,7 @@ body.night-mode {
     transition: width 0.2s;
 }
 
-body.night-mode textarea{
+#scrollerOverlayContainer.night-mode textarea{
     background-color: #222;
     color: #bbb;
 }
@@ -132,7 +114,7 @@ body.night-mode textarea{
     cursor: pointer;
 }
 
-body.night-mode button {
+#scrollerOverlayContainer.night-mode button {
     border: #eee 2px solid;
 }
 

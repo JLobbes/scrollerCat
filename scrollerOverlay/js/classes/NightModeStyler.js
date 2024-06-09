@@ -1,7 +1,7 @@
 class NightModeStyler {
     constructor() {
         this.nightModeSpecificSelectors = [    
-            'body',    
+            '#scrollerOverlayContainer',    
             '.text', 
             '.text-wrapper', 
             '.button-panel textarea',

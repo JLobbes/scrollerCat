@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Scrolling Text Reader</title>
+    <title>Scroller Overlay for scrollerCat</title>
 
     <link rel="stylesheet" href="styles.css">
 
@@ -14,81 +14,77 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC&display=swap" rel="stylesheet">
 </head>
-<body class="unselectable">
-    <div id="mobileFullScreenFillerTop">
-        <!-- This element expands to push mobile version into fullScreen -->
-    </div>
-    <div id="toolbar" class="button-panel">
-        <div>
-            <button class="open">
-                <img id="toolIcon" src="images/hammer-icon.png" class="unselectable"
-                alt="Hammer icon to indicate tools">
-            </button>
-            <button class="close hidden">
-                <img id="settingsIconActive" src="images/hammer-icon-active.gif" class="unselectable"
-                alt="Jiggling hammer icon to indicate setting are open">
-            </button>
-        </div>
-
-        <div id="externalDivider" class="hidden">
-            <div class="button-divider">
-                <img src="images/divider-icon.png">
+<body>
+    <div id="scrollerOverlayContainer" class="unselectable">
+        <div id="toolbar" class="button-panel">
+            <div>
+                <button class="open">
+                    <img id="toolIcon" src="images/hammer-icon.png" class="unselectable"
+                    alt="Hammer icon to indicate tools">
+                </button>
+                <button class="close hidden">
+                    <img id="settingsIconActive" src="images/hammer-icon-active.gif" class="unselectable"
+                    alt="Jiggling hammer icon to indicate setting are open">
+                </button>
             </div>
-        </div>
-
-        <div class="nested-buttons">
-            <div id="internalDivider" class="toggle-button-container hidden-setting" draggable="true">
+    
+            <div id="externalDivider" class="hidden">
                 <div class="button-divider">
                     <img src="images/divider-icon.png">
                 </div>
             </div>
     
-            <!-- Buttons filled by JavaScript -->
-        </div>
-    </div>
-
-    <div class="text-wrapper">
-        <div id="text" class="unselectable">
-            <!--
-                IMPORTANT NOTE: 
-                This is filled when TextScroller object is instantiated. 
-                However, the '...' below forces font-family styles to be active before
-                the first mapping of text. Others, text will be incorretly meeasured
-            -->
-        </div>
-        <div id="setttingsNotification"></div>
-    </div>
-
-    <div id="settings" class="button-panel">
-        <div>
-            <button class="open" >
-                <img id="settingsIcon" src="images/setting-gear-icon.png" class="unselectable"
-                alt="Gear icon to indicate settings">
-            </button>
-            <button class="close hidden">
-                <img id="settingsIconActive" src="images/spinning-setting-gear-icon.gif" class="unselectable"
-                    alt="Spinning gear icon to indicate setting are open">
-            </button>
-        </div>
-
-        <div id="externalDivider" class="hidden">
-            <div class="button-divider">
-                <img src="images/divider-icon.png">
+            <div class="nested-buttons">
+                <div id="internalDivider" class="toggle-button-container hidden-setting" draggable="true">
+                    <div class="button-divider">
+                        <img src="images/divider-icon.png">
+                    </div>
+                </div>
+        
+                <!-- Buttons filled by JavaScript -->
             </div>
         </div>
-        
-        <div class="nested-buttons">
-            <div id="internalDivider" class="toggle-button-container hidden-setting" draggable="true">
+    
+        <div class="text-wrapper">
+            <div id="text" class="unselectable">
+                <!--
+                    IMPORTANT NOTE: 
+                    This is filled when TextScroller object is instantiated. 
+                    However, the '...' below forces font-family styles to be active before
+                    the first mapping of text. Others, text will be incorretly meeasured
+                -->
+            </div>
+            <div id="setttingsNotification"></div>
+        </div>
+    
+        <div id="settings" class="button-panel">
+            <div>
+                <button class="open" >
+                    <img id="settingsIcon" src="images/setting-gear-icon.png" class="unselectable"
+                    alt="Gear icon to indicate settings">
+                </button>
+                <button class="close hidden">
+                    <img id="settingsIconActive" src="images/spinning-setting-gear-icon.gif" class="unselectable"
+                        alt="Spinning gear icon to indicate setting are open">
+                </button>
+            </div>
+    
+            <div id="externalDivider" class="hidden">
                 <div class="button-divider">
                     <img src="images/divider-icon.png">
                 </div>
             </div>
-
-            <!-- Buttons filled by JavaScript -->
+            
+            <div class="nested-buttons">
+                <div id="internalDivider" class="toggle-button-container hidden-setting" draggable="true">
+                    <div class="button-divider">
+                        <img src="images/divider-icon.png">
+                    </div>
+                </div>
+    
+                <!-- Buttons filled by JavaScript -->
+            </div>
         </div>
-    </div>
-    <div id="mobileFullScreenFillerBottom">
-        <!-- This element expands to push mobile version into fullScreen -->
     </div>
 
 
@@ -96,7 +92,7 @@
     <script src="js/initialText.js"></script> 
 
     <!-- Classes -->
-    <script src="js/classes/Application.js"></script>
+    <script src="js/classes/Overlay.js"></script>
     <script src="js/classes/UserSetting.js"></script>
     <script src="js/classes/Word.js"></script>
     <script src="js/classes/TextScroller.js"></script>
@@ -106,12 +102,11 @@
     <script src="js/classes/Notification.js"></script>
     <script src="js/classes/PasteZoneStyler.js"></script>
     <script src="js/classes/NightModeStyler.js"></script>
-    <script src="js/classes/FullScreenStyler.js"></script>
 
     <!-- Instances -->
     <script src="js/objects/settingsPanel.js"></script>
     <script src="js/objects/toolbar.js"></script>
-    <script src="js/index.js"></script> 
+    <script src="js/scrollerOverlay.js"></script> 
 </body>
 
 </html>
