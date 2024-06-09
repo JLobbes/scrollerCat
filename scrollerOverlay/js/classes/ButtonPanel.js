@@ -53,18 +53,6 @@ class ButtonPanel {
         }
     }
     
-    addInteriorDivider() {
-
-    }
-
-    removeInteriorDivider() {
-
-    }
-
-    addExteriorDivider() {
-
-    }
-
     openPanel() {
         // Start active icon animation
         this.addHiddenClass(this.openPanelButton);
@@ -113,7 +101,7 @@ class ButtonPanel {
         internalDivider.style.width = '25px';
         
         // remove special inline style for external divider
-        const externalDivider = this.panel.querySelector('#externalDivider')
+        const externalDivider = this.panel.querySelector('#externalDivider');
         this.addHiddenClass(externalDivider);
     }
 
@@ -138,7 +126,7 @@ class ButtonPanel {
     
         if(dividerIndex > 0) { // If divider is NOT first item
             // Add special inline style for external divider
-            const externalDivider = document.getElementById('externalDivider');
+            const externalDivider = this.panel.querySelector('#externalDivider');
             this.removeHiddenClass(externalDivider);
         }
         
