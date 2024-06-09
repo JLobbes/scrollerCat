@@ -24,14 +24,13 @@ scrollerOverlay.prepareSettingsPanel = function() {
     this.settingsPanel.addEventListeners();
 
     // Stitch buttons from settingPanel to textScroller functions
-    // Cycle toggle button until previously saved state is hit
     const nightModeStyler = new NightModeStyler();
     this.settingsPanel.buttonContainers['nightMode'].mainFunction = () => {
         const indexOfCurrentState = this.settingsPanel.buttonContainers['nightMode'].indexOfCurrentState;
         const newStateValue = this.settingsPanel.buttonContainers['nightMode'].states[indexOfCurrentState]['value']; 
         nightModeStyler.toggleNightMode(newStateValue);
     };
-    this.settingsPanel.buttonContainers['nightMode'].cycleButton();
+    this.settingsPanel.buttonContainers['nightMode'].renderSavedState();
 
 
     this.settingsPanel.buttonContainers['adjustFontSize'].mainFunction = () => {
@@ -41,7 +40,7 @@ scrollerOverlay.prepareSettingsPanel = function() {
     };
     document.fonts.ready.then(() => {
         // Ensure that styles are applied before initial text mapping
-        this.settingsPanel.buttonContainers['adjustFontSize'].cycleButton();
+        this.settingsPanel.buttonContainers['adjustFontSize'].renderSavedState();
     });
 
 
@@ -51,7 +50,7 @@ scrollerOverlay.prepareSettingsPanel = function() {
         const newStateValue = this.settingsPanel.buttonContainers['scrollerBoxWidth'].states[indexOfCurrentState]['value']; 
         this.textScroller.setScrollerBoxWidth(newStateValue);
     };
-    this.settingsPanel.buttonContainers['scrollerBoxWidth'].cycleButton();
+    this.settingsPanel.buttonContainers['scrollerBoxWidth'].renderSavedState();
 
 
     this.settingsPanel.buttonContainers['scrollerBoxHeight'].mainFunction = () => {
@@ -59,7 +58,7 @@ scrollerOverlay.prepareSettingsPanel = function() {
         const newStateValue = this.settingsPanel.buttonContainers['scrollerBoxHeight'].states[indexOfCurrentState]['value']; 
         this.textScroller.setScrollerBoxHeight(newStateValue);
     };
-    this.settingsPanel.buttonContainers['scrollerBoxHeight'].cycleButton();
+    this.settingsPanel.buttonContainers['scrollerBoxHeight'].renderSavedState();
 
     const keypressPowerButton = this.settingsPanel.buttonContainers['keypressPower'];
     if(!scrollerOverlay.isIphone) {
@@ -68,7 +67,7 @@ scrollerOverlay.prepareSettingsPanel = function() {
             const newStateValue = keypressPowerButton.states[indexOfCurrentState]['value']; 
             this.textScroller.setKeyboardStep(newStateValue);
         };
-        keypressPowerButton.cycleButton();
+        keypressPowerButton.renderSavedState();
     } else {
         delete this.settingsPanel.buttonContainers['keypressPower'];
         console.log(this.settingsPanel.buttonContainers);
@@ -81,7 +80,7 @@ scrollerOverlay.prepareSettingsPanel = function() {
         const newStateValue = this.settingsPanel.buttonContainers['dragSpeed'].states[indexOfCurrentState]['value']; 
         this.textScroller.setDragMultiplier(newStateValue);
     };
-    this.settingsPanel.buttonContainers['dragSpeed'].cycleButton();
+    this.settingsPanel.buttonContainers['dragSpeed'].renderSavedState();
 
 
     this.settingsPanel.buttonContainers['autoScroll'].mainFunction = () => {
@@ -89,7 +88,7 @@ scrollerOverlay.prepareSettingsPanel = function() {
         const newStateValue = this.settingsPanel.buttonContainers['autoScroll'].states[indexOfCurrentState]['value']; 
         this.textScroller.setAutoScrollConfiguration(newStateValue);
     };
-    this.settingsPanel.buttonContainers['autoScroll'].cycleButton();
+    this.settingsPanel.buttonContainers['autoScroll'].renderSavedState();
 
 }
 

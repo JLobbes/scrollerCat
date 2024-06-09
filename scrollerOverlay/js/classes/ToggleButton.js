@@ -4,8 +4,8 @@ class ToggleButton {
     constructor(buttonType, buttonName, saveState) {
         this.name = buttonName;
         this.buttonType = buttonType; // currentState or nextState      
-        // currentState ToggleButton (NOT predictive) shows the current state if clicked. Not predicitive.
         // nextState ToggleButton (predictive) shows the next state if clicked. 
+        // currentState ToggleButton (NOT predictive) shows the current state if clicked. Not predicitive.
         this.states = [];
 
         this.saveState = saveState;
@@ -40,6 +40,7 @@ class ToggleButton {
             this.buttonSetting.saveSetting(this.indexOfCurrentState);
         }
         this.updateButtonElem();
+        
         try {
             this.mainFunction();
         }
@@ -82,11 +83,10 @@ class ToggleButton {
         return container;
     }
 
-    cycleButton() {
-        const numberOfCycles = this.states.length;
-        for (let i = 0; i < numberOfCycles; i++) {
-            this.advanceState();
-        }
+    renderSavedState() {
+        const prevIndex = (this.indexOfCurrentState - 1 + this.states.length) % this.states.length;
+        this.indexOfCurrentState = prevIndex;
+        this.advanceState();
     }
 }
 
