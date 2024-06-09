@@ -25,40 +25,44 @@ scrollerOverlay.prepareSettingsPanel = function() {
 
     // Stitch buttons from settingPanel to textScroller functions
     const nightModeStyler = new NightModeStyler();
-    this.settingsPanel.buttonContainers['nightMode'].mainFunction = () => {
-        const indexOfCurrentState = this.settingsPanel.buttonContainers['nightMode'].indexOfCurrentState;
-        const newStateValue = this.settingsPanel.buttonContainers['nightMode'].states[indexOfCurrentState]['value']; 
+    const nightModeButton = this.settingsPanel.buttonContainers['nightMode'];
+    nightModeButton.mainFunction = () => {
+        const indexOfCurrentState = nightModeButton.indexOfCurrentState;
+        const newStateValue = nightModeButton.states[indexOfCurrentState]['value']; 
         nightModeStyler.toggleNightMode(newStateValue);
     };
-    this.settingsPanel.buttonContainers['nightMode'].renderSavedState();
+    nightModeButton.renderSavedState();
 
 
-    this.settingsPanel.buttonContainers['adjustFontSize'].mainFunction = () => {
-        const indexOfCurrentState = this.settingsPanel.buttonContainers['adjustFontSize'].indexOfCurrentState;
-        const newStateValue = this.settingsPanel.buttonContainers['adjustFontSize'].states[indexOfCurrentState]['value']; 
+    const fontSizeButton = this.settingsPanel.buttonContainers['adjustFontSize'];
+    fontSizeButton.mainFunction = () => {
+        const indexOfCurrentState = fontSizeButton.indexOfCurrentState;
+        const newStateValue = fontSizeButton.states[indexOfCurrentState]['value']; 
         this.textScroller.setFontSize(newStateValue);
     };
     document.fonts.ready.then(() => {
         // Ensure that styles are applied before initial text mapping
-        this.settingsPanel.buttonContainers['adjustFontSize'].renderSavedState();
+        fontSizeButton.renderSavedState();
     });
 
-
     
-    this.settingsPanel.buttonContainers['scrollerBoxWidth'].mainFunction = () => {
-        const indexOfCurrentState = this.settingsPanel.buttonContainers['scrollerBoxWidth'].indexOfCurrentState;
+    const scrollerBoxWidthButton = this.settingsPanel.buttonContainers['scrollerBoxWidth'];
+    scrollerBoxWidthButton.mainFunction = () => {
+        const indexOfCurrentState = scrollerBoxWidthButton.indexOfCurrentState;
         const newStateValue = this.settingsPanel.buttonContainers['scrollerBoxWidth'].states[indexOfCurrentState]['value']; 
         this.textScroller.setScrollerBoxWidth(newStateValue);
     };
-    this.settingsPanel.buttonContainers['scrollerBoxWidth'].renderSavedState();
+    scrollerBoxWidthButton.renderSavedState();
 
 
-    this.settingsPanel.buttonContainers['scrollerBoxHeight'].mainFunction = () => {
-        const indexOfCurrentState = this.settingsPanel.buttonContainers['scrollerBoxHeight'].indexOfCurrentState;
-        const newStateValue = this.settingsPanel.buttonContainers['scrollerBoxHeight'].states[indexOfCurrentState]['value']; 
+    const scrollerBoxHeightButon = this.settingsPanel.buttonContainers['scrollerBoxHeight'];
+    scrollerBoxHeightButon.mainFunction = () => {
+        const indexOfCurrentState = scrollerBoxHeightButon.indexOfCurrentState;
+        const newStateValue = scrollerBoxHeightButon.states[indexOfCurrentState]['value']; 
         this.textScroller.setScrollerBoxHeight(newStateValue);
     };
-    this.settingsPanel.buttonContainers['scrollerBoxHeight'].renderSavedState();
+    scrollerBoxHeightButon.renderSavedState();
+
 
     const keypressPowerButton = this.settingsPanel.buttonContainers['keypressPower'];
     if(!scrollerOverlay.isIphone) {
@@ -75,21 +79,22 @@ scrollerOverlay.prepareSettingsPanel = function() {
     }
 
     
-    this.settingsPanel.buttonContainers['dragSpeed'].mainFunction = () => {
-        const indexOfCurrentState = this.settingsPanel.buttonContainers['dragSpeed'].indexOfCurrentState;
-        const newStateValue = this.settingsPanel.buttonContainers['dragSpeed'].states[indexOfCurrentState]['value']; 
+    const dragSpeedButton = this.settingsPanel.buttonContainers['dragSpeed'];
+    dragSpeedButton.mainFunction = () => {
+        const indexOfCurrentState = dragSpeedButton.indexOfCurrentState;
+        const newStateValue = dragSpeedButton.states[indexOfCurrentState]['value']; 
         this.textScroller.setDragMultiplier(newStateValue);
     };
-    this.settingsPanel.buttonContainers['dragSpeed'].renderSavedState();
+    dragSpeedButton.renderSavedState();
 
 
-    this.settingsPanel.buttonContainers['autoScroll'].mainFunction = () => {
-        const indexOfCurrentState = this.settingsPanel.buttonContainers['autoScroll'].indexOfCurrentState;
-        const newStateValue = this.settingsPanel.buttonContainers['autoScroll'].states[indexOfCurrentState]['value']; 
+    const autoScrollButton = this.settingsPanel.buttonContainers['autoScroll'];
+    autoScrollButton.mainFunction = () => {
+        const indexOfCurrentState = autoScrollButton.indexOfCurrentState;
+        const newStateValue = autoScrollButton.states[indexOfCurrentState]['value']; 
         this.textScroller.setAutoScrollConfiguration(newStateValue);
     };
-    this.settingsPanel.buttonContainers['autoScroll'].renderSavedState();
-
+    autoScrollButton.renderSavedState();
 }
 
 scrollerOverlay.prepareToolbar = function() {
@@ -97,29 +102,30 @@ scrollerOverlay.prepareToolbar = function() {
     this.toolbar.loadButtonPanelHTML(); 
     this.toolbar.addEventListeners();
 
-
     const pasteZoneStyler = new PasteZoneStyler();
-    this.toolbar.buttonContainers['userTextInput'].mainFunction = () => {
-        const indexOfCurrentState = this.toolbar.buttonContainers['userTextInput'].indexOfCurrentState;
-        const newStateValue = this.toolbar.buttonContainers['userTextInput'].states[indexOfCurrentState]['value']; 
+    const inputTextButton = this.toolbar.buttonContainers['userTextInput'];
+    inputTextButton.mainFunction = () => {
+        const indexOfCurrentState = inputTextButton.indexOfCurrentState;
+        const newStateValue = inputTextButton.states[indexOfCurrentState]['value']; 
         pasteZoneStyler.togglePasteZone(newStateValue);
         if(newStateValue) {
             this.textScroller.handleUserTextInput();
         }
     };
     this.toolbar.panel.querySelector('.close').addEventListener('click', () => {
-        this.toolbar.buttonContainers['userTextInput'].indexOfCurrentState = 0;
-        this.toolbar.buttonContainers['userTextInput'].updateButtonElem();
+        inputTextButton.indexOfCurrentState = 0;
+        inputTextButton.updateButtonElem();
         pasteZoneStyler.closePasteZone();
     });
-    
+
 
     const playPauseButton = this.toolbar.buttonContainers['read'];
     playPauseButton.mainFunction = () => {
         this.textScroller.toggleAutoScroll();
     };
 
-    this.toolbar.buttonContainers['centerText'].mainFunction = () => {
+    const centerTextButton = this.toolbar.buttonContainers['centerText'];
+    centerTextButton.mainFunction = () => {
         this.textScroller.centerText();
     };
 }
