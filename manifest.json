@@ -1,4 +1,5 @@
 {
+    "comment": "// This was my original draft manifest.json. It's being scrapped and salvaged for the one in /scrollerCatExtentions",
     "manifest_version": 3,
     "name": "ScrollerCat",
     "version": "1.0",
