@@ -1,0 +1,17 @@
+{
+    "manifest_version": 3,
+    "name": "ScrollerCat",
+    "version": "1.0",
+    "description": "A browser extension reading tool using OCR.",
+    "permissions": ["activeTab", "storage"],
+    "background": {
+      "service_worker": "background.js"
+    },
+    "action": {
+      "default_popup": "scrollerOverlay.html",
+      "default_icon": {
+        "scrollerCatImg": "../scrollerCat-logo.png"
+      }
+    }
+}
+  
