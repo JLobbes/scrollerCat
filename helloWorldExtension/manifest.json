@@ -2,16 +2,17 @@
     "manifest_version": 3,
     "name": "ScrollerCat",
     "version": "1.0",
-    "description": "A browser extension reading tool using OCR.",
-    "permissions": ["activeTab", "storage"],
-    "background": {
-      "service_worker": "background.js"
-    },
+    "description": "In-browser reading tool to make all text readable, using OCR.",
     "action": {
-      "default_popup": "scrollerOverlay.html",
+      "default_popup": "hello.html",
       "default_icon": {
-        "scrollerCatImg": "../scrollerCat-logo.png"
+        "48": "images/scrollerCat-headOnly-logo-48.png",
+        "128": "images/scrollerCat-headOnly-logo-128.png"
       }
+    },
+    "icons": {
+        "48": "images/scrollerCat-noBook-logo-48.png",
+        "128": "images/scrollerCat-noBook-logo-128.png"
     }
 }
   
