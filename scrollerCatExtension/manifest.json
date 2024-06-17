@@ -4,18 +4,19 @@
     "version": "1.0",
     "description": "In-browser reading tool to make all text readable, using OCR.",
     "action": {
-      "default_popup": "helloPopUp.html",
       "default_icon": {
         "48": "images/scrollerCat-headOnly-logo-48.png",
         "128": "images/scrollerCat-headOnly-logo-128.png"
       }
     },
+    "background": {
+      "service_worker": "scripts/background.js"
+    },
     "content_scripts": [
       {
         "matches": ["<all_urls>"],
         "js": [
-          "scripts/classes/TestClass.js",
-          "scripts/scrollerOverlay/scrollerOverlay.js"
+          "scripts/classes/TestClass.js"
         ],
         "css": [
           "styles/scrollerOverlay.css"
@@ -26,6 +27,9 @@
         "48": "images/scrollerCat-noBook-logo-48.png",
         "128": "images/scrollerCat-noBook-logo-128.png"
     },
+    "permissions": [
+      "activeTab", "scripting"
+    ],
     "web_accessible_resources": [
       {
         "resources": [
