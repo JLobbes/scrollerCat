@@ -229,14 +229,14 @@
           'Two arrows towards left to indicate key stroke moves text more.',
           200
       );
-      const keypressTripleIcon = chrome.runtime.getURL('images/keypress-double-icon.png');
+      const keypressTripleIcon = chrome.runtime.getURL('images/keypress-triple-icon.png');
       this.settingsPanel.buttonContainers['keypressPower'].addState(
           'keypressLarge', 
           keypressTripleIcon,
           'Three left to indicate key stroke moves text most.',
           300
       );
-      const keypressIcon = chrome.runtime.getURL('images/keypressicon.png');
+      const keypressIcon = chrome.runtime.getURL('images/keypress-icon.png');
       this.settingsPanel.buttonContainers['keypressPower'].addState(
           'keypressSmall', 
           keypressIcon,

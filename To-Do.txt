@@ -4,3 +4,7 @@
     or 
 
     have it look insde the #ScrollerOverlayContainer first.
+
+-   Prevent double injection
+
+-   Add a minimize button and/or escape button.
