@@ -1,0 +1,6 @@
+-   Make id's for buttonPanels more robust so the listener
+    in the ButtonPanel class doesn't accidentally pick up on other DOM items.
+
+    or 
+
+    have it look insde the #ScrollerOverlayContainer first.

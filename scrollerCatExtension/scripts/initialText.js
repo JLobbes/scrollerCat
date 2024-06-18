@@ -8,6 +8,6 @@
         Hi, this tool is being modified for the scrollerCat browser extension.
         `
     ;
-
+    
     window.loadUpText = loadUpText;
 })();

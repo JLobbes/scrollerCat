@@ -16,7 +16,16 @@
       {
         "matches": ["<all_urls>"],
         "js": [
-          "scripts/classes/TestClass.js"
+          "scripts/classes/ScrollerOverlay.js",
+          "scripts/classes/Word.js",
+          "scripts/classes/TextScroller.js",
+          "scripts/classes/UserSetting.js",
+          "scripts/classes/Button.js",
+          "scripts/classes/ToggleButton.js",
+          "scripts/classes/ButtonPanel.js",
+          "scripts/classes/PasteZoneStyler.js",
+          "scripts/classes/NightModeStyler.js",
+          "scripts/initialText.js"
         ],
         "css": [
           "styles/scrollerOverlay.css"
@@ -33,7 +42,53 @@
     "web_accessible_resources": [
       {
         "resources": [
-          "images/hammer-icon.png"
+        "images/add-icon.png",
+        "images/center-icon.png",
+        "images/curving-arrow-icon.png",
+        "images/daylight-mode-icon.png",
+        "images/divider-icon-night-mode.png",
+        "images/divider-icon.png",
+        "images/go-icon.png",
+        "images/hammer-icon-active.gif",
+        "images/hammer-icon.png",
+        "images/keypress-double-icon.png",
+        "images/keypress-icon.png",
+        "images/keypress-triple-icon.png",
+        "images/minus-icon.png",
+        "images/narrowest-icon.png",
+        "images/night-mode-icon.png",
+        "images/paste-icon.png",
+        "images/pause-icon.png",
+        "images/play-icon.png",
+        "images/pointer-icon-double.png",
+        "images/pointer-icon-single.png",
+        "images/pointer-icon-triple.png",
+        "images/rabbit-icon.png",
+        "images/reset-icon.png",
+        "images/scrollerCat-headOnly-logo-48.png",
+        "images/scrollerCat-headOnly-logo-128.png",
+        "images/scrollerCat-noBook-logo-48.png",
+        "images/scrollerCat-noBook-logo-128.png",
+        "images/sentence-scroll-fast.gif",
+        "images/sentence-scroll-med.gif",
+        "images/sentence-scroll-slow.gif",
+        "images/sentence-swipe-fast.gif",
+        "images/sentence-swipe-med.gif",
+        "images/sentence-swipe-slow.gif",
+        "images/setting-gear-icon.png",
+        "images/shortest-icon.png",
+        "images/smaller-screen-icon.png",
+        "images/spinning-setting-gear-icon.gif",
+        "images/stop-icon.png",
+        "images/taller-icon.png",
+        "images/tallest-icon.png",
+        "images/text-icon-large.png",
+        "images/text-icon-largest.png",
+        "images/text-icon-med.png",
+        "images/text-icon-smaller.png",
+        "images/text-icon-smallest.png",
+        "images/wider-icon.png",
+        "images/widest-icon.png"
         ],
         "matches": ["<all_urls>"]
       }
