@@ -1,4 +1,4 @@
-<img src="scrollerCat-logo.png" alt="scrollerCat Logo" width="200" height="200">
+<img src="scrollerCatExtension/images/scrollerCat-logo.png" alt="scrollerCat Logo" width="200" height="200">
 
 # scrollerCat - Browser Extension
 
