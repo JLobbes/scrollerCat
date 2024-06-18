@@ -6,7 +6,10 @@
 
   function injectScrollerOverlay() {
     const testIcon = chrome.runtime.getURL('../../images/hammer-icon.png');
-  
+    // Test Class used.
+    const testClassInstance = new window.TestClass();
+    testClassInstance.someMethod();
+
     const scrollerOverlay = document.createElement('div');
     scrollerOverlay.id = 'scrollerOverlay';
     scrollerOverlay.innerHTML = `
