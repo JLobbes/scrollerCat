@@ -22,6 +22,7 @@
 
     scrollerOverlay.prepareToolbar = function() {
       this.toolbar = new window.ButtonPanel('toolbar', this); 
+
       this.toolbar.createButton('centerText');
       const centerTextIcon = chrome.runtime.getURL('images/center-icon.png');
       this.toolbar.buttonContainers['centerText'].setIconData(
@@ -101,6 +102,7 @@
 
     scrollerOverlay.prepareSettingsPanel = function() {
       this.settingsPanel = new window.ButtonPanel('settings', this);
+
       this.settingsPanel.createToggleButton(
         'nightMode', 
         'nextState',
@@ -399,7 +401,7 @@
     }
 
     scrollerOverlay.prepareForInjection = function() {
-      this.scrollerOverlayHTML = scrollerOverlay.createHTMLContainer();
+      this.scrollerOverlayHTML = scrollerOverlay.scrollerOverlayHTML;
       document.body.appendChild(this.scrollerOverlayHTML);
       
       this.prepareTextScroller();

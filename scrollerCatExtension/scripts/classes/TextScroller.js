@@ -148,7 +148,7 @@
             this.assessRightBoundaryWords();
             this.assessLeftBoundaryWords();
             
-            this.printVisibleWords();
+            // this.printVisibleWords();
         }  
         
         assessRightBoundaryWords() {
@@ -449,8 +449,8 @@
             // Remap text at different size
             this.wordPostionMap_Object = {};
             this.wordPostionMap_Object = this.getWordMap(); // Measure the text in spans
-            console.log(this.fontSize);
-            console.log('this.wordPositionMap:', this.wordPostionMap_Object);
+            // console.log(this.fontSize);
+            // console.log('this.wordPositionMap:', this.wordPostionMap_Object);
     
             this.scrollerText.innerHTML = '' // Clear the newly measured spans as movement is resource 
             this.scrollerText.textContent = this.userTextInput;
