@@ -131,19 +131,15 @@
         toolbarContainer.appendChild(externalDivider);
         toolbarContainer.appendChild(nestedButtonsContainer);
 
-        const textWrapper = document.createElement("div");
-        textWrapper.classList.add("text-wrapper");
+        const textScroller = document.createElement("div");
+        textScroller.classList.add("text-wrapper");
 
         const text = document.createElement("div");
         text.id = "text";
         text.classList.add("unselectable");
         text.innerHTML = `<!-- IMPORTANT NOTE: This is filled when TextScroller object is instantiated. However, the '...' below forces font-family styles to be active before the first mapping of text. Others, text will be incorretly meeasured -->`;
 
-        const settingsNotification = document.createElement("div");
-        settingsNotification.id = "setttingsNotification";
-
-        textWrapper.appendChild(text);
-        textWrapper.appendChild(settingsNotification);
+        textScroller.appendChild(text);
 
         const settingsContainer = document.createElement("div");
         settingsContainer.id = "settings";
@@ -226,7 +222,7 @@
         settingsContainer.appendChild(settingsNestedButtonsContainer);
 
         overlayHarness.appendChild(toolbarContainer);
-        overlayHarness.appendChild(textWrapper);
+        overlayHarness.appendChild(textScroller);
         overlayHarness.appendChild(settingsContainer);
 
         return overlayHarness;
