@@ -54,7 +54,7 @@
         const overlayHarness = document.createElement("div");
         overlayHarness.id = "scrollerOverlayContainer";
         // overlayHarness.classList.add('unselectable');
-        overlayHarness.draggable = "true";
+        // overlayHarness.draggable = "true";
 
         const toolbarContainer = document.createElement("div");
         toolbarContainer.id = "toolbar";
@@ -225,12 +225,36 @@
         overlayHarness.appendChild(textScroller);
         overlayHarness.appendChild(settingsContainer);
 
+        // Add selectable bumpers on outside of scrollerOverlayContainer <div>
+        // Create bumper elements
+        const bumpers = ["top", "right", "bottom", "left"].map((pos) => {
+          const bumper = document.createElement("div");
+          bumper.classList.add("bumper", pos);
+          bumper.style.position = "absolute";
+          bumper.style.zIndex = "1000";
+          bumper.style.width =
+            pos === "top" || pos === "bottom" ? "100%" : "10px";
+          bumper.style.height =
+            pos === "left" || pos === "right" ? "100%" : "10px";
+          bumper.style[pos] = "0";
+          return bumper;
+        });
+
+        // Append bumpers to the body
+        bumpers.forEach(bumper => overlayHarness.appendChild(bumper));
+
         return overlayHarness;
       }
 
       addDragListeners() {
-        const overlay = this.scrollerOverlayHTML;
-        overlay.addEventListener("mousedown", (e) => this.startDrag(e));
+        const bumpers = this.scrollerOverlayHTML.querySelectorAll('.bumper');
+
+        bumpers.forEach(bumper => {
+            bumper.addEventListener('mousedown', (e) => this.startDrag(e));
+        });
+
+        // const overlay = this.scrollerOverlayHTML;
+        // overlay.addEventListener("mousedown", (e) => this.startDrag(e));
       }
 
       startDrag(e) {
@@ -241,7 +265,7 @@
         const rect = this.scrollerOverlayHTML.getBoundingClientRect();
         this.overlayStartX = rect.left;
         this.overlayStartY = rect.top;
-        this.scrollerOverlayHTML.style.cursor = "grabbing";
+        // this.scrollerOverlayHTML.style.cursor = "grabbing";
 
         document.addEventListener("mousemove", this.drag);
         document.addEventListener("mouseup", this.endDrag);
@@ -258,7 +282,7 @@
       endDrag = (e) => {
         if (!this.dragging) return;
         this.dragging = false;
-        this.scrollerOverlayHTML.style.cursor = "grab";
+        // this.scrollerOverlayHTML.style.cursor = "grab";
 
         document.removeEventListener("mousemove", this.drag);
         document.removeEventListener("mouseup", this.endDrag);

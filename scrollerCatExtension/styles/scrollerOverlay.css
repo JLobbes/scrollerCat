@@ -24,6 +24,23 @@
   color: #fff;
 }
 
+.bumper {
+  background: pink;
+  cursor: grab;
+}
+
+.bumper.top, .bumper.bottom {
+  height: 10px;
+  left: 0;
+  right: 0;
+}
+
+.bumper.left, .bumper.right {
+  width: 10px;
+  top: 0;
+  bottom: 0;
+}
+
 .text-wrapper {
   /* height & width are defined and manipulated by TextScroller.js */
   margin: 20px 0px;
