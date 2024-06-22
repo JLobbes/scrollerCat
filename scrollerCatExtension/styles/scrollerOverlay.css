@@ -63,6 +63,48 @@
   right: 0px;
 }
 
+.corner {
+  position: absolute;
+  cursor: grab;
+  border-radius: 10px;
+}
+
+.corner:hover {
+  background: #666;
+}
+
+.corner.top-left {
+  width: 20px;
+  height: 20px;
+  top: 0;
+  left: 0;
+  cursor: nw-resize;
+}
+
+.corner.top-right {
+  width: 20px;
+  height: 20px;
+  top: 0;
+  right: 0;
+  cursor: ne-resize;
+}
+
+.corner.bottom-left {
+  width: 20px;
+  height: 20px;
+  bottom: 0;
+  left: 0;
+  cursor: sw-resize;
+}
+
+.corner.bottom-right {
+  width: 20px;
+  height: 20px;
+  bottom: 0;
+  right: 0;
+  cursor: se-resize;
+}
+
 .text-wrapper {
   /* height & width are defined and manipulated by TextScroller.js */
   margin: 20px 0px;

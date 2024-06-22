@@ -226,16 +226,21 @@
         overlayHarness.appendChild(settingsContainer);
 
         // Add selectable bumpers on outside of scrollerOverlayContainer <div>
-        // Create bumper elements
-        
         const bumpers = ["top", "right", "bottom", "left"].map((pos) => {
           const bumper = document.createElement("div");
           bumper.classList.add("bumper", pos);
           return bumper;
         });
-
-        // Append bumpers to the body
         bumpers.forEach(bumper => overlayHarness.appendChild(bumper));
+
+        // Add selectable corners to the scrollerOverlayContainer <div></div>
+        const corners = ["top-left", "top-right", "bottom-left", "bottom-right",].map((pos) => {
+          const corner = document.createElement("div");
+          corner.classList.add("corner", pos);
+          return corner;
+        });
+        corners.forEach((corner) => overlayHarness.appendChild(corner));
+    
 
         return overlayHarness;
       }
