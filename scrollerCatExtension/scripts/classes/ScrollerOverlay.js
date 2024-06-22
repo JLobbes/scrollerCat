@@ -6,12 +6,24 @@
         this.isIphone = false;
         this.queryForIphone();
         this.scrollerOverlayHTML = this.createHTMLContainer();
+
+        // Repositioning Logic
         this.dragging = false;
         this.dragStartX = 0;
         this.dragStartY = 0;
         this.overlayStartX = 0;
         this.overlayStartY = 0;
         this.addDragListeners();
+
+        // Resize Logic
+        this.resizing = false;
+        this.resizeStartX = 0;
+        this.resizeStartY = 0;
+        this.overlayStartWidth = 0;
+        this.overlayStartHeight = 0;
+        this.overlayStartLeft = 0;
+        this.overlayStartTop = 0;
+        this.addResizeListeners();
       }
 
       queryForIphone() {
@@ -231,25 +243,29 @@
           bumper.classList.add("bumper", pos);
           return bumper;
         });
-        bumpers.forEach(bumper => overlayHarness.appendChild(bumper));
+        bumpers.forEach((bumper) => overlayHarness.appendChild(bumper));
 
         // Add selectable corners to the scrollerOverlayContainer <div></div>
-        const corners = ["top-left", "top-right", "bottom-left", "bottom-right",].map((pos) => {
+        const corners = [
+          "top-left",
+          "top-right",
+          "bottom-left",
+          "bottom-right",
+        ].map((pos) => {
           const corner = document.createElement("div");
           corner.classList.add("corner", pos);
           return corner;
         });
         corners.forEach((corner) => overlayHarness.appendChild(corner));
-    
 
         return overlayHarness;
       }
 
       addDragListeners() {
-        const bumpers = this.scrollerOverlayHTML.querySelectorAll('.bumper');
+        const bumpers = this.scrollerOverlayHTML.querySelectorAll(".bumper");
 
-        bumpers.forEach(bumper => {
-            bumper.addEventListener('mousedown', (e) => this.startDrag(e));
+        bumpers.forEach((bumper) => {
+          bumper.addEventListener("mousedown", (e) => this.startDrag(e));
         });
 
         // const overlay = this.scrollerOverlayHTML;
@@ -274,7 +290,9 @@
         if (!this.dragging) return;
         const deltaX = e.clientX - this.dragStartX;
         const deltaY = e.clientY - this.dragStartY;
-        this.scrollerOverlayHTML.style.left = `${this.overlayStartX + deltaX}px`;
+        this.scrollerOverlayHTML.style.left = `${
+          this.overlayStartX + deltaX
+        }px`;
         this.scrollerOverlayHTML.style.top = `${this.overlayStartY + deltaY}px`;
       };
 
@@ -285,6 +303,81 @@
 
         document.removeEventListener("mousemove", this.drag);
         document.removeEventListener("mouseup", this.endDrag);
+      };
+
+      addResizeListeners() {
+        const cornerBumpers = this.scrollerOverlayHTML.querySelectorAll(
+          ".corner.top-left, .corner.top-right, .corner.bottom-left, .corner.bottom-right"
+        );
+        cornerBumpers.forEach((corner) => {
+          corner.addEventListener("mousedown", (e) => this.startResize(e));
+        });
+      }
+
+      startResize(e) {
+        e.preventDefault();
+        this.resizing = true;
+        this.resizeStartX = e.clientX;
+        this.resizeStartY = e.clientY;
+        const rect = this.scrollerOverlayHTML.getBoundingClientRect();
+        this.overlayStartWidth = rect.width;
+        this.overlayStartHeight = rect.height;
+        this.overlayStartLeft = rect.left;
+        this.overlayStartTop = rect.top;
+        this.resizeDirection = e.target.classList.contains("top-left")
+          ? "nw"
+          : e.target.classList.contains("top-right")
+          ? "ne"
+          : e.target.classList.contains("bottom-left")
+          ? "sw" : "se";
+        document.addEventListener("mousemove", this.resize);
+        document.addEventListener("mouseup", this.endResize);
+      }
+
+      resize = (e) => {
+        if (!this.resizing) return;
+
+        const deltaX = e.clientX - this.resizeStartX;
+        const deltaY = e.clientY - this.resizeStartY;
+
+        let newWidth = this.overlayStartWidth;
+        let newHeight = this.overlayStartHeight;
+        let newLeft = this.overlayStartLeft;
+        let newTop = this.overlayStartTop;
+
+        if (this.resizeDirection.includes('e')) newWidth += deltaX;
+        if (this.resizeDirection.includes('w')) {
+            newWidth -= deltaX;
+            newLeft += deltaX;
+        }
+        if (this.resizeDirection.includes('s')) newHeight += deltaY;
+        if (this.resizeDirection.includes('n')) {
+            newHeight -= deltaY;
+            newTop += deltaY;
+        }
+
+        if (newWidth < 400) { 
+          newWidth = 400; 
+          const rect = this.scrollerOverlayHTML.getBoundingClientRect();
+          newLeft = rect.left;
+        }
+        if (newHeight < 300) { 
+          newHeight = 300;
+          const rect = this.scrollerOverlayHTML.getBoundingClientRect();
+          newTop = rect.top;
+        }
+
+        this.scrollerOverlayHTML.style.width = `${newWidth}px`;
+        this.scrollerOverlayHTML.style.height = `${newHeight}px`;
+        this.scrollerOverlayHTML.style.left = `${newLeft}px`;
+        this.scrollerOverlayHTML.style.top = `${newTop}px`;
+      };
+
+      endResize = (e) => {
+        if (!this.resizing) return;
+        this.resizing = false;
+        document.removeEventListener("mousemove", this.resize);
+        document.removeEventListener("mouseup", this.endResize);
       };
     }
 

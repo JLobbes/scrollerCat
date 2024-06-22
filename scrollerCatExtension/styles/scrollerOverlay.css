@@ -35,31 +35,51 @@
   background: #333;
 }
 
+#scrollerOverlayContainer.night-mode .bumper:hover {
+  background: #aaa;
+}
+
 .bumper.top {
   height: 20px;
-  left: 20px;
-  right: 20px;
+  left: 25%;
+  right: 25%;
   top: 0px;
+}
+
+.bumper.top:hover {
+  box-shadow: -5px 3px 10px rgba(238, 238, 238, 1), 5px 3px 10px rgba(238, 238, 238, 1);
+}
+
+#scrollerOverlayContainer.night-mode .bumper.top:hover {
+  box-shadow: -5px 5px 10px rgba(17, 17, 17, 1), 5px 5px 10px rgba(17, 17, 17, 1);
 }
 
 .bumper.bottom {
   height: 20px;
-  left: 20px;
-  right: 20px;
+  left: 25%;
+  right: 25%;
   bottom: 0px;
+}
+
+.bumper.bottom:hover {
+  box-shadow: -5px -3px 10px rgba(238, 238, 238, 1), 5px -3px 10px rgba(238, 238, 238, 1);
+}
+
+#scrollerOverlayContainer.night-mode .bumper.bottom:hover {
+  box-shadow: 5px -5px 10px rgba(17, 17, 17, 1), -5px -5px 10px rgba(17, 17, 17, 1);
 }
 
 .bumper.left {
   width: 20px;
-  top: 20px;
-  bottom: 20px;
+  top: 25%;
+  bottom: 25%;
   left: 0px;
 } 
 
 .bumper.right {
   width: 20px;
-  top: 20px;
-  bottom: 20px;
+  top: 25%;
+  bottom: 25%;
   right: 0px;
 }
 
@@ -71,6 +91,10 @@
 
 .corner:hover {
   background: #666;
+}
+
+#scrollerOverlayContainer.night-mode .corner:hover {
+  background: #ccc;
 }
 
 .corner.top-left {
