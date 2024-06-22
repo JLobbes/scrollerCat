@@ -227,16 +227,10 @@
 
         // Add selectable bumpers on outside of scrollerOverlayContainer <div>
         // Create bumper elements
+        
         const bumpers = ["top", "right", "bottom", "left"].map((pos) => {
           const bumper = document.createElement("div");
           bumper.classList.add("bumper", pos);
-          bumper.style.position = "absolute";
-          bumper.style.zIndex = "1000";
-          bumper.style.width =
-            pos === "top" || pos === "bottom" ? "100%" : "10px";
-          bumper.style.height =
-            pos === "left" || pos === "right" ? "100%" : "10px";
-          bumper.style[pos] = "0";
           return bumper;
         });
 

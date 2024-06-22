@@ -25,20 +25,42 @@
 }
 
 .bumper {
-  background: pink;
+  position: absolute;
   cursor: grab;
+  border-radius: 10px;
 }
 
-.bumper.top, .bumper.bottom {
-  height: 10px;
-  left: 0;
-  right: 0;
+
+.bumper:hover {
+  background: #333;
 }
 
-.bumper.left, .bumper.right {
-  width: 10px;
-  top: 0;
-  bottom: 0;
+.bumper.top {
+  height: 20px;
+  left: 20px;
+  right: 20px;
+  top: 0px;
+}
+
+.bumper.bottom {
+  height: 20px;
+  left: 20px;
+  right: 20px;
+  bottom: 0px;
+}
+
+.bumper.left {
+  width: 20px;
+  top: 20px;
+  bottom: 20px;
+  left: 0px;
+} 
+
+.bumper.right {
+  width: 20px;
+  top: 20px;
+  bottom: 20px;
+  right: 0px;
 }
 
 .text-wrapper {
