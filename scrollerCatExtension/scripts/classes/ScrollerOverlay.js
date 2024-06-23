@@ -258,6 +258,25 @@
         });
         corners.forEach((corner) => overlayHarness.appendChild(corner));
 
+        // Add standard open, close, & minimze buttons to the scrollerOverlayContainer
+        const minusButton = document.createElement("div");
+        minusButton.classList.add("control-button")
+        minusButton.id = "minimizeButton";
+        minusButton.textContent = "-";
+        overlayHarness.appendChild(minusButton);
+        
+        const plusButton = document.createElement("div");
+        plusButton.classList.add("control-button");
+        plusButton.id = "maximizeButton";
+        plusButton.textContent = "+";
+        overlayHarness.appendChild(plusButton);
+
+        const closeButton = document.createElement("div");
+        closeButton.classList.add("control-button");
+        closeButton.id = "closeButton";
+        closeButton.textContent = "x";
+        overlayHarness.appendChild(closeButton);
+
         return overlayHarness;
       }
 

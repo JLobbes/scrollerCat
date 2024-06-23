@@ -41,8 +41,8 @@
 
 .bumper.top {
   height: 20px;
-  left: 25%;
-  right: 25%;
+  left: 30%;
+  right: 30%;
   top: 0px;
 }
 
@@ -56,8 +56,8 @@
 
 .bumper.bottom {
   height: 20px;
-  left: 25%;
-  right: 25%;
+  left: 30%;
+  right: 30%;
   bottom: 0px;
 }
 
@@ -71,8 +71,8 @@
 
 .bumper.left {
   width: 20px;
-  top: 25%;
-  bottom: 25%;
+  top: 30%;
+  bottom: 30%;
   left: 0px;
 } 
 
@@ -127,6 +127,44 @@
   bottom: 0;
   right: 0;
   cursor: se-resize;
+}
+
+.control-button {
+  position: absolute;
+  top: 3px; 
+  height: 20px; 
+  background: rgb(51, 51, 51, 0.05); 
+  border-radius: 10px; 
+  color: #eee; 
+  font-size: 18px; 
+  font-weight: bold;
+  text-align: center;
+  cursor: pointer;
+}
+
+#closeButton {
+  width: 40px;
+  right: 30px;
+}
+
+#closeButton:hover {
+  background: rgba(157, 32, 32, 0.7); /* Background color */
+}
+
+#minimizeButton {
+  width: 20px;
+  right: 72px;
+}
+#minimizeButton:hover {
+  background: rgba(34, 151, 167, 0.7); /* Background color */
+}
+
+#maximizeButton {
+  width: 20px;
+  right: 94px;
+}
+#maximizeButton:hover {
+  background: rgba(18, 165, 118, 0.7); /* Background color */
 }
 
 .text-wrapper {
