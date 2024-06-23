@@ -142,29 +142,48 @@
   cursor: pointer;
 }
 
+#scrollerOverlayContainer.night-mode .control-button {
+  background: rgb(238, 238, 238, 0.05); 
+  color: #111;
+}
+
 #closeButton {
   width: 40px;
   right: 30px;
 }
 
 #closeButton:hover {
-  background: rgba(157, 32, 32, 0.7); /* Background color */
+  background: rgba(157, 32, 32, 0.7); 
+}
+
+#scrollerOverlayContainer.night-mode #closeButton:hover {
+  background: rgba(158, 64, 64, 0.8); 
 }
 
 #minimizeButton {
   width: 20px;
   right: 72px;
 }
+
 #minimizeButton:hover {
-  background: rgba(34, 151, 167, 0.7); /* Background color */
+  background: rgba(34, 151, 167, 0.7); 
+}
+
+#scrollerOverlayContainer.night-mode #minimizeButton:hover {
+  background: rgba(34, 151, 167, 0.7); 
 }
 
 #maximizeButton {
   width: 20px;
   right: 94px;
 }
+
 #maximizeButton:hover {
-  background: rgba(18, 165, 118, 0.7); /* Background color */
+  background: rgba(18, 165, 118, 0.7); 
+}
+
+#scrollerOverlayContainer.night-mode #maximizeButton:hover {
+  background: rgba(18, 165, 118, 0.7); 
 }
 
 .text-wrapper {
