@@ -129,6 +129,9 @@
 
 .control-button {
   position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   top: 3px; 
   height: 20px; 
   background: rgb(51, 51, 51, 0.05); 
