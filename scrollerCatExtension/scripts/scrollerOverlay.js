@@ -11,6 +11,17 @@
   // Everything is wrapped in an immediately invoked function to
   // avoid polluting the global namespace of the window object.
 
+  try {
+    const existingOverlay = document.getElementById('scrollerOverlayContainer');
+    if(existingOverlay) {
+        console.log('An overlay has already been injected. New injection haulted.');
+        return
+    };
+  }
+  catch (e) {
+    console.error(e.message);
+  }
+
   function injectScrollerOverlay() {
     const scrollerOverlay = new window.ScrollerOverlay();
 
