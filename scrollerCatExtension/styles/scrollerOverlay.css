@@ -1,9 +1,6 @@
 /* scripts/scrollerOverlay/scrollerOverlay.css */
-
 #scrollerOverlayContainer {
   position: fixed;
-  bottom: 10px;
-  left: 10px;
   height: 400px;
   width: 700px;
   margin: 0;
@@ -16,6 +13,7 @@
   border: #111 solid 5px;
   box-shadow: 0 6px 8px rgba(0, 0, 0, 0.5);
   border-radius: 10px;
+  transform: height 0.5s, width 0.5s;
   z-index: 9999;
 }
 

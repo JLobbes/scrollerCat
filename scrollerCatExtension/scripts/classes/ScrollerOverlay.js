@@ -24,6 +24,9 @@
         this.overlayStartLeft = 0;
         this.overlayStartTop = 0;
         this.addResizeListeners();
+
+        // Minimizize/Maximize Logic
+        this.minimized = false;
       }
 
       queryForIphone() {
@@ -65,8 +68,6 @@
         // Create HTML structure
         const overlayHarness = document.createElement("div");
         overlayHarness.id = "scrollerOverlayContainer";
-        // overlayHarness.classList.add('unselectable');
-        // overlayHarness.draggable = "true";
 
         const toolbarContainer = document.createElement("div");
         toolbarContainer.id = "toolbar";
@@ -258,23 +259,26 @@
         });
         corners.forEach((corner) => overlayHarness.appendChild(corner));
 
-        // Add standard open, close, & minimze buttons to the scrollerOverlayContainer
+        // Add standard open, close, & minimize buttons to the scrollerOverlayContainer
         const minusButton = document.createElement("div");
         minusButton.classList.add("control-button")
         minusButton.id = "minimizeButton";
         minusButton.textContent = "-";
+        minusButton.addEventListener('click', this.minimizeScrollerOverlay.bind(this));
         overlayHarness.appendChild(minusButton);
         
         const plusButton = document.createElement("div");
         plusButton.classList.add("control-button");
         plusButton.id = "maximizeButton";
         plusButton.textContent = "+";
+        plusButton.addEventListener('click', this.maximizeScrollerOverlay.bind(this));
         overlayHarness.appendChild(plusButton);
 
         const closeButton = document.createElement("div");
         closeButton.classList.add("control-button");
         closeButton.id = "closeButton";
         closeButton.textContent = "x";
+        closeButton.addEventListener('click', this.closeScrollerOverlay.bind(this));
         overlayHarness.appendChild(closeButton);
 
         return overlayHarness;
@@ -287,8 +291,6 @@
           bumper.addEventListener("mousedown", (e) => this.startDrag(e));
         });
 
-        // const overlay = this.scrollerOverlayHTML;
-        // overlay.addEventListener("mousedown", (e) => this.startDrag(e));
       }
 
       startDrag(e) {
@@ -299,7 +301,6 @@
         const rect = this.scrollerOverlayHTML.getBoundingClientRect();
         this.overlayStartX = rect.left;
         this.overlayStartY = rect.top;
-        // this.scrollerOverlayHTML.style.cursor = "grabbing";
 
         document.addEventListener("mousemove", this.drag);
         document.addEventListener("mouseup", this.endDrag);
@@ -318,7 +319,6 @@
       endDrag = (e) => {
         if (!this.dragging) return;
         this.dragging = false;
-        // this.scrollerOverlayHTML.style.cursor = "grab";
 
         document.removeEventListener("mousemove", this.drag);
         document.removeEventListener("mouseup", this.endDrag);
@@ -398,6 +398,94 @@
         document.removeEventListener("mousemove", this.resize);
         document.removeEventListener("mouseup", this.endResize);
       };
+
+      closeScrollerOverlay() {
+        this.scrollerOverlayHTML.remove();
+      }
+
+      minimizeScrollerOverlay() {
+        if(this.minimized) return;
+        this.minimized = true;
+
+        const rect = this.scrollerOverlayHTML.getBoundingClientRect();
+        this.overlayStartWidth = rect.width;
+        this.overlayStartHeight = rect.height;
+        this.overlayStartLeft = rect.left;
+        console.log('mimize startLeft:', this.overlayStartLeft);
+        this.overlayStartTop = (rect.top);
+        console.log('mimize startTop:', this.overlayStartTop);
+
+        this.scrollerOverlayHTML.style.width = `140px`;
+        this.scrollerOverlayHTML.style.height = `20px`;
+
+        // clear unwanted styling
+        this.scrollerOverlayHTML.style.left = ``;
+        this.scrollerOverlayHTML.style.top = ``;
+
+        this.scrollerOverlayHTML.style.right = `0px`;
+        this.scrollerOverlayHTML.style.bottom = `0px`;
+
+        const textScroller = this.scrollerOverlayHTML.querySelector('.text-wrapper');
+        textScroller.style.border = 'none';
+
+        const controlButtons = this.scrollerOverlayHTML.querySelectorAll('.control-button');
+        controlButtons.forEach((button) => {
+          button.style.top = '0px';
+        })
+
+        const corners = this.scrollerOverlayHTML.querySelectorAll('.corner');
+        corners.forEach((corner ) => {
+          corner.style.display = 'none';
+        });
+
+        const bumpers = this.scrollerOverlayHTML.querySelectorAll('.bumper');
+        bumpers.forEach((bumper) => {
+          if(bumper.classList.contains('top')) {
+            bumper.style.display = 'none';
+          };
+          if(bumper.classList.contains('bottom')) {
+            bumper.style.display = 'none';
+          };
+        });
+      }
+
+      maximizeScrollerOverlay() {
+        if(!this.minimized) return;
+        this.minimized = false;
+
+        // clear left and top positioning
+        this.scrollerOverlayHTML.style.right = ``;
+        this.scrollerOverlayHTML.style.bottom = ``;                
+
+        // restore original styles 
+        this.scrollerOverlayHTML.style.left = `${this.overlayStartLeft}px`;
+        this.scrollerOverlayHTML.style.top = `${this.overlayStartTop}px`;
+        this.scrollerOverlayHTML.style.width = `${this.overlayStartWidth - 10}px`; // must account for 10px border
+        this.scrollerOverlayHTML.style.height = `${this.overlayStartHeight - 10}px`; // must account for 10px border
+
+        const textScroller = this.scrollerOverlayHTML.querySelector('.text-wrapper');
+        textScroller.style.border = '';
+
+        const controlButtons = this.scrollerOverlayHTML.querySelectorAll('.control-button');
+        controlButtons.forEach((button) => {
+          button.style.top = '3px';
+        })
+
+        const corners = this.scrollerOverlayHTML.querySelectorAll('.corner');
+        corners.forEach((corner ) => {
+          corner.style.display = '';
+        })
+
+        const bumpers = this.scrollerOverlayHTML.querySelectorAll('.bumper');
+        bumpers.forEach((bumper) => {
+          if(bumper.classList.contains('top')) {
+            bumper.style.display = '';
+          };
+          if(bumper.classList.contains('bottom')) {
+            bumper.style.display = '';
+          };
+        });
+      }
     }
 
     // Attach class to global window object
