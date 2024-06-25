@@ -513,7 +513,7 @@
                 screen.width / 2 - halfWidth
             }px`;
             const scrollerOverlayHeight = 400; //px
-            const halfHeight = Math.floor(scrollerOverlayWidth / 2);
+            const halfHeight = Math.floor(scrollerOverlayHeight / 2);
             this.scrollerOverlayHTML.style.top = `${
                 screen.right / 2 - halfHeight
             }px`;
