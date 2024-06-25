@@ -411,9 +411,7 @@
         this.overlayStartWidth = rect.width;
         this.overlayStartHeight = rect.height;
         this.overlayStartLeft = rect.left;
-        console.log('mimize startLeft:', this.overlayStartLeft);
         this.overlayStartTop = (rect.top);
-        console.log('mimize startTop:', this.overlayStartTop);
 
         this.scrollerOverlayHTML.style.width = `140px`;
         this.scrollerOverlayHTML.style.height = `20px`;
