@@ -506,17 +506,12 @@
         scrollerOverlay.prepareForInjection = function () {
             this.scrollerOverlayHTML = scrollerOverlay.scrollerOverlayHTML;
 
-            const screen = document.body.getBoundingClientRect();
             const scrollerOverlayWidth = 700; //px
             const halfWidth = Math.floor(scrollerOverlayWidth / 2);
-            this.scrollerOverlayHTML.style.left = `${
-                screen.width / 2 - halfWidth
-            }px`;
+            this.scrollerOverlayHTML.style.left = `${window.innerWidth / 2 - halfWidth}px`;
             const scrollerOverlayHeight = 400; //px
             const halfHeight = Math.floor(scrollerOverlayHeight / 2);
-            this.scrollerOverlayHTML.style.top = `${
-                screen.right / 2 - halfHeight
-            }px`;
+            this.scrollerOverlayHTML.style.top = `${window.innerHeight / 2 - halfHeight}px`;
 
             document.body.appendChild(this.scrollerOverlayHTML);
 
