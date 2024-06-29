@@ -46,6 +46,15 @@
                 "Icon to indicate text centered in scrollerBox"
             );
 
+            this.toolbar.createButton("dragSelect");
+            const dragSelectIcon = chrome.runtime.getURL(
+                "images/drag-select-icon.png"
+            );
+            this.toolbar.buttonContainers["dragSelect"].setIconData(
+                dragSelectIcon,
+                "Icon to indicate screen click and drag selection for OCR"
+            );
+
             this.toolbar.createToggleButton(
                 "userTextInput",
                 "nextState",

@@ -17,16 +17,16 @@
       {
         "matches": ["<all_urls>"],
         "js": [
-          "scripts/classes/TestOCRBuddy.js",
-          "scripts/classes/ScrollerOverlay.js",
-          "scripts/classes/Word.js",
-          "scripts/classes/TextScroller.js",
-          "scripts/classes/UserSetting.js",
           "scripts/classes/Button.js",
-          "scripts/classes/ToggleButton.js",
           "scripts/classes/ButtonPanel.js",
-          "scripts/classes/PasteZoneStyler.js",
           "scripts/classes/NightModeStyler.js",
+          "scripts/classes/OCRHelper.js",
+          "scripts/classes/PasteZoneStyler.js",
+          "scripts/classes/ScrollerOverlay.js",
+          "scripts/classes/TextScroller.js",
+          "scripts/classes/ToggleButton.js",
+          "scripts/classes/UserSetting.js",
+          "scripts/classes/Word.js",
           "scripts/initialText.js"
         ],
         "css": [
@@ -47,6 +47,7 @@
         "images/add-icon.png",
         "images/center-icon.png",
         "images/curving-arrow-icon.png",
+        "images/drag-select-icon.png",
         "images/daylight-mode-icon.png",
         "images/divider-icon-night-mode.png",
         "images/divider-icon.png",
@@ -96,7 +97,7 @@
         "scripts/tesseract/tesseract-core.wasm.js",
         "scripts/tesseract/tesseract-core-simd.wasm.js",
         "scripts/tesseract/tesseract-core.wasm",
-        "scripts/tesseract/ocrWorker.js"
+        "scripts/tesseract/OCRworker.js"
         ],
         "matches": ["<all_urls>"]
       }
