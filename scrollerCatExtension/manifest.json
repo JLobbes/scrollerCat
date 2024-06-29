@@ -11,11 +11,13 @@
     },
     "background": {
       "service_worker": "scripts/background.js"
+
     },
     "content_scripts": [
       {
         "matches": ["<all_urls>"],
         "js": [
+          "scripts/classes/TestOCRBuddy.js",
           "scripts/classes/ScrollerOverlay.js",
           "scripts/classes/Word.js",
           "scripts/classes/TextScroller.js",
@@ -57,6 +59,7 @@
         "images/minus-icon.png",
         "images/narrowest-icon.png",
         "images/night-mode-icon.png",
+        "images/OCRTestScreenshot.png",
         "images/paste-icon.png",
         "images/pause-icon.png",
         "images/play-icon.png",
@@ -88,7 +91,12 @@
         "images/text-icon-smaller.png",
         "images/text-icon-smallest.png",
         "images/wider-icon.png",
-        "images/widest-icon.png"
+        "images/widest-icon.png",
+        "scripts/tesseract/tesseract.min.js",
+        "scripts/tesseract/tesseract-core.wasm.js",
+        "scripts/tesseract/tesseract-core-simd.wasm.js",
+        "scripts/tesseract/tesseract-core.wasm",
+        "scripts/tesseract/ocrWorker.js"
         ],
         "matches": ["<all_urls>"]
       }

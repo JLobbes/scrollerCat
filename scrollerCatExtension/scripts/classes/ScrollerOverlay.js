@@ -49,12 +49,12 @@
             head.appendChild(link1);
 
             const link2 = document.createElement("link");
-            link2.rel = "preconnect";
-            link2.href = "https://fonts.googleapis.com";
-            head.appendChild(link2);
+			link2.rel = "preconnect";
+			link2.href = "https://fonts.googleapis.com";
+			head.appendChild(link2);
 
-            const link3 = document.createElement("link");
-            link3.rel = "preconnect";
+			const link3 = document.createElement("link");
+			link3.rel = "preconnect";
             link3.href = "https://fonts.gstatic.com";
             link3.crossOrigin = "anonymous";
             head.appendChild(link3);
