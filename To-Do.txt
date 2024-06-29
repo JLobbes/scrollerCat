@@ -5,6 +5,27 @@
 
     have it look insde the #ScrollerOverlayContainer first.
 
--   Prevent double injection
+-   minimize and maximize buttons don't need to be 
+    visible at the same time.
 
--   Add a minimize button and/or escape button.
+-   introduce basic proofreading to the output text
+
+-   add highlight to input option as opposed to dragSelect
+
+-   add escape feature to dragSelect if user changes mind
+
+-   add timeout to OCR
+
+-   add a fullScreen feature
+
+-   add a loading icon
+
+-   include other languages
+
+-   include the pre-processing to see if the OCR gets faster
+
+-   add animations to maximize and minimize
+
+-   include licenses for Tesseract.
+
+-   make text in TextScroller selectable

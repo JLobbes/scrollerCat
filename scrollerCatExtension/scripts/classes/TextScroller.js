@@ -5,8 +5,7 @@
     class TextScroller {
         constructor(isIphone) {
             // Main DOM items
-            this.scrollerBox =
-                document.getElementsByClassName("text-wrapper")[0];
+            this.scrollerBox = document.getElementsByClassName("text-wrapper")[0];
             this.scrollerText = document.getElementById("text");
             this.intialText = "...";
             this.userTextInput = "...";
@@ -53,27 +52,15 @@
 
         addEventListeners() {
             // Drag listeners
-            this.scrollerBox.addEventListener(
-                "mousedown",
-                this.startDrag.bind(this)
-            );
-            this.scrollerBox.addEventListener(
-                "touchstart",
-                this.startDrag.bind(this),
-                { passive: true }
-            );
+            this.scrollerBox.addEventListener("mousedown", this.startDrag.bind(this));
+            this.scrollerBox.addEventListener("touchstart", this.startDrag.bind(this), { passive: true });
             document.addEventListener("mousemove", this.doDrag.bind(this));
-            document.addEventListener("touchmove", this.doDrag.bind(this), {
-                passive: false,
-            });
+            document.addEventListener("touchmove", this.doDrag.bind(this), { passive: false });
             document.addEventListener("mouseup", this.endDrag.bind(this));
             document.addEventListener("touchend", this.endDrag.bind(this));
 
             // Key listeners
-            document.addEventListener(
-                "keydown",
-                this.keyboardControl.bind(this)
-            );
+            document.addEventListener("keydown", this.keyboardControl.bind(this));
 
             // Boundary Assessment & Protection with delay
             const delayedAssessBoundaries = () => {
@@ -89,13 +76,9 @@
             this.intialText = text;
         }
 
-        handleUserTextInput() {
+        handleUserTextInput(inputText) {
             try {
-                const userInputTextarea = document.getElementById("textInput");
-                const userTextInput = userInputTextarea.value
-                    ? userInputTextarea.value
-                    : this.intialText;
-                if (userInputTextarea) userInputTextarea.value = ""; // Clear the user-input textarea
+                const userTextInput = (inputText) ? inputText : this.intialText;
                 this.userTextInput = userTextInput;
             } catch (error) {
                 console.log("userInputTextarea only prepared as needed");

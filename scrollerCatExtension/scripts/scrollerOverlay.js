@@ -56,27 +56,28 @@
                 "Icon to indicate screen click and drag selection for OCR"
             );
 
-            this.toolbar.createToggleButton(
-                "userTextInput",
-                "nextState",
-                false // State not saved to local storage
-            );
-            const curvingArrowIcon = chrome.runtime.getURL(
-                "images/curving-arrow-icon.png"
-            );
-            this.toolbar.buttonContainers["userTextInput"].addState(
-                "pasteZoneClosed",
-                curvingArrowIcon,
-                "Arrow curving towards textScroller to indicate text will pushed to textScroller.",
-                true
-            );
-            const pasteIcon = chrome.runtime.getURL("images/paste-icon.png");
-            this.toolbar.buttonContainers["userTextInput"].addState(
-                "pasteZoneOpen",
-                pasteIcon,
-                "Paste page icon to indicate open paste text textarea.",
-                false
-            );
+            // PasteZone will be temporarily removed
+            // this.toolbar.createToggleButton(
+            //     "userTextInput",
+            //     "nextState",
+            //     false // State not saved to local storage
+            // );
+            // const curvingArrowIcon = chrome.runtime.getURL(
+            //     "images/curving-arrow-icon.png"
+            // );
+            // this.toolbar.buttonContainers["userTextInput"].addState(
+            //     "pasteZoneClosed",
+            //     curvingArrowIcon,
+            //     "Arrow curving towards textScroller to indicate text will pushed to textScroller.",
+            //     true
+            // );
+            // const pasteIcon = chrome.runtime.getURL("images/paste-icon.png");
+            // this.toolbar.buttonContainers["userTextInput"].addState(
+            //     "pasteZoneOpen",
+            //     pasteIcon,
+            //     "Paste page icon to indicate open paste text textarea.",
+            //     false
+            // );
 
             this.toolbar.createToggleButton(
                 "read",
@@ -101,24 +102,25 @@
             this.toolbar.loadButtonPanelHTML();
             this.toolbar.addEventListeners();
 
-            const pasteZoneStyler = new window.PasteZoneStyler();
-            const inputTextButton =this.toolbar.buttonContainers["userTextInput"];
-            inputTextButton.mainFunction = () => {
-                const indexOfCurrentState = inputTextButton.indexOfCurrentState;
-                const newStateValue =
-                    inputTextButton.states[indexOfCurrentState]["value"];
-                pasteZoneStyler.togglePasteZone(newStateValue);
-                if (newStateValue) {
-                    this.textScroller.handleUserTextInput();
-                }
-            };
-            this.toolbar.panel
-                .querySelector(".close")
-                .addEventListener("click", () => {
-                    inputTextButton.indexOfCurrentState = 0;
-                    inputTextButton.updateButtonElem();
-                    pasteZoneStyler.closePasteZone();
-                });
+            // PasteZoneStyler will be temporarily removed
+            // const pasteZoneStyler = new window.PasteZoneStyler();
+            // const inputTextButton =this.toolbar.buttonContainers["userTextInput"];
+            // inputTextButton.mainFunction = () => {
+            //     const indexOfCurrentState = inputTextButton.indexOfCurrentState;
+            //     const newStateValue =
+            //         inputTextButton.states[indexOfCurrentState]["value"];
+            //     pasteZoneStyler.togglePasteZone(newStateValue);
+            //     if (newStateValue) {
+            //         this.textScroller.handleUserTextInput();
+            //     }
+            // };
+            // this.toolbar.panel
+            //     .querySelector(".close")
+            //     .addEventListener("click", () => {
+            //         inputTextButton.indexOfCurrentState = 0;
+            //         inputTextButton.updateButtonElem();
+            //         pasteZoneStyler.closePasteZone();
+            //     });
 
             const playPauseButton = this.toolbar.buttonContainers["read"];
             playPauseButton.mainFunction = () => {
@@ -132,10 +134,16 @@
 
             const OCRHelper = new window.OCRHelper();
             const dragSelectButton = this.toolbar.buttonContainers["dragSelect"];
-            dragSelectButton.mainFunction = () => {
+            dragSelectButton.mainFunction = async () => {
                 scrollerOverlay.minimizeScrollerOverlay();
-                OCRHelper.initiateDragSelect();
-                console.log('someone click the drag select button');
+                try {
+                    const extractedText = await OCRHelper.initiateDragSelect();
+                    scrollerOverlay.textScroller.handleUserTextInput(extractedText);
+                    scrollerOverlay.maximizeScrollerOverlay();
+                } catch (error) {
+                    console.error('Error during OCR process:', error);
+                }
+                console.log('someone clicked the drag select button');
             };
         };
 
