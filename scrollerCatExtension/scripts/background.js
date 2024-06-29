@@ -20,3 +20,20 @@ chrome.action.onClicked.addListener((tab) => {
 });
 
 console.log('Listener registered');
+
+
+//  the following listener is waiting for messages to capture 
+//  the active tab. This can't be done on the main thread directly.
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (request.action === 'captureVisibleTab') {
+      chrome.tabs.captureVisibleTab({ format: 'png' }, (dataUrl) => {
+          if (chrome.runtime.lastError) {
+              sendResponse({ error: chrome.runtime.lastError.message });
+          } else {
+              sendResponse({ screenshotUrl: dataUrl });
+          }
+      });
+      
+      return true;
+  }
+});

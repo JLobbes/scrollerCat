@@ -39,7 +39,7 @@
         "128": "images/scrollerCat-noBook-logo-128.png"
     },
     "permissions": [
-      "activeTab", "scripting"
+      "activeTab", "tabs", "scripting"
     ],
     "web_accessible_resources": [
       {

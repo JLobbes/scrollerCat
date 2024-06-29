@@ -1,10 +1,11 @@
 // scripts/scrollerOverlay.js
-// uses window.ScrollerOverlay class
-// uses window.TextScroller class
-// uses window.PasteZoneStyler class
-// uses window.NightModeStyler class
 // uses window.ButtonPanel class
 // uses window.loadUpText
+// uses window.NightModeStyler class
+// uses window.OCRHelper class
+// uses window.PasteZoneStyler class
+// uses window.TextScroller class
+// uses window.ScrollerOverlay class
 
 (function () {
     console.log("scrollerOverlay.js script loaded");
@@ -101,8 +102,7 @@
             this.toolbar.addEventListeners();
 
             const pasteZoneStyler = new window.PasteZoneStyler();
-            const inputTextButton =
-                this.toolbar.buttonContainers["userTextInput"];
+            const inputTextButton =this.toolbar.buttonContainers["userTextInput"];
             inputTextButton.mainFunction = () => {
                 const indexOfCurrentState = inputTextButton.indexOfCurrentState;
                 const newStateValue =
@@ -125,10 +125,17 @@
                 this.textScroller.toggleAutoScroll();
             };
 
-            const centerTextButton =
-                this.toolbar.buttonContainers["centerText"];
+            const centerTextButton = this.toolbar.buttonContainers["centerText"];
             centerTextButton.mainFunction = () => {
                 this.textScroller.centerText();
+            };
+
+            const OCRHelper = new window.OCRHelper();
+            const dragSelectButton = this.toolbar.buttonContainers["dragSelect"];
+            dragSelectButton.mainFunction = () => {
+                scrollerOverlay.minimizeScrollerOverlay();
+                OCRHelper.initiateDragSelect();
+                console.log('someone click the drag select button');
             };
         };
 

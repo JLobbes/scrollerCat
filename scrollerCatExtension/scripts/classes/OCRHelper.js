@@ -13,23 +13,6 @@
                 image.onload = () => {
                     const canvas = document.createElement('canvas');
                     const context = canvas.getContext('2d');
-
-                    // reduce image size if needed, may remove if this logic complicates highlights
-                    const maxDimension = 1024; 
-                    let width = image.width;
-                    let height = image.height;
-                    if (width > maxDimension || height > maxDimension) {
-                        if (width > height) {
-                            height = Math.floor(height * (maxDimension / width));
-                            width = maxDimension;
-                        } else {
-                            width = Math.floor(width * (maxDimension / height));
-                            height = maxDimension;
-                        }
-                    }
-
-                    canvas.width = width;
-                    canvas.height = height;
                     context.drawImage(image, 0, 0, width, height);
 
                     // convert to grayscale
@@ -103,5 +86,91 @@
             const blobURL = URL.createObjectURL(blob);
             return new Worker(blobURL);
         }
+
+        initiateDragSelect() {
+            const dragSelectOverlay = document.createElement('div');
+            dragSelectOverlay.id = 'dragSelectOverlay';
+            dragSelectOverlay.style.position = 'fixed';
+            dragSelectOverlay.style.top = 0;
+            dragSelectOverlay.style.left = 0;
+            dragSelectOverlay.style.width = '100vw';
+            dragSelectOverlay.style.height = '100vh';
+            dragSelectOverlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+            dragSelectOverlay.style.zIndex = 10000;
+            dragSelectOverlay.style.cursor = 'crosshair';
+            document.body.appendChild(dragSelectOverlay);
+    
+            let startX, startY, endX, endY, selectionBox;
+    
+            const mouseDownHandler = (e) => {
+                startX = e.clientX;
+                startY = e.clientY;
+                selectionBox = document.createElement('div');
+                selectionBox.id = 'selectionBox';
+                selectionBox.style.position = 'absolute';
+                selectionBox.style.border = '2px dashed #fff';
+                selectionBox.style.backgroundColor = 'rgba(255, 255, 255, 0.3)';
+                selectionBox.style.left = `${startX}px`;
+                selectionBox.style.top = `${startY}px`;
+                dragSelectOverlay.appendChild(selectionBox);
+                dragSelectOverlay.addEventListener('mousemove', mouseMoveHandler);
+                dragSelectOverlay.addEventListener('mouseup', mouseUpHandler);
+            };
+    
+            const mouseMoveHandler = (e) => {
+                endX = e.clientX;
+                endY = e.clientY;
+                selectionBox.style.width = `${Math.abs(endX - startX)}px`;
+                selectionBox.style.height = `${Math.abs(endY - startY)}px`;
+                selectionBox.style.left = `${Math.min(startX, endX)}px`;
+                selectionBox.style.top = `${Math.min(startY, endY)}px`;
+            };
+    
+            const mouseUpHandler = async (e) => {
+                dragSelectOverlay.removeEventListener('mousemove', mouseMoveHandler);
+                dragSelectOverlay.removeEventListener('mouseup', mouseUpHandler);
+                document.body.removeChild(dragSelectOverlay);
+    
+                const selectedArea = {
+                    x: Math.min(startX, endX),
+                    y: Math.min(startY, endY),
+                    width: Math.abs(endX - startX),
+                    height: Math.abs(endY - startY),
+                };
+    
+                const screenshotUrl = await this.captureScreenshot();
+                this.processSelectedArea(screenshotUrl, selectedArea);
+            };
+    
+            dragSelectOverlay.addEventListener('mousedown', mouseDownHandler);
+        }
+    
+        async captureScreenshot() {
+            return new Promise((resolve, reject) => {
+                chrome.runtime.sendMessage({ action: 'captureVisibleTab' }, (response) => {
+                    if (response.error) {
+                        reject(response.error);
+                    } else {
+                        resolve(response.screenshotUrl);
+                    }
+                });
+            });
+        }
+
+        async processSelectedArea(screenshotUrl, selectedArea) {
+            const image = new Image();
+            image.src = screenshotUrl;
+            image.onload = () => {
+                const canvas = document.createElement('canvas');
+                const context = canvas.getContext('2d');
+                canvas.width = selectedArea.width;
+                canvas.height = selectedArea.height;
+                context.drawImage(image, selectedArea.x, selectedArea.y, selectedArea.width, selectedArea.height, 0, 0, selectedArea.width, selectedArea.height);
+                const croppedImageUrl = canvas.toDataURL('image/png');
+                this.processImage(croppedImageUrl);
+            };
+        }
     }
+
+    window.OCRHelper = OCRHelper;
 })();
