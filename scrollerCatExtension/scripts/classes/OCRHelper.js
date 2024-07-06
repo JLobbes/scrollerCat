@@ -143,23 +143,11 @@ class OCRHelper {
                     height: Math.abs(endY - startY),
                 };
     
-                console.log(`Selected Area: ${JSON.stringify(selectedArea)}`);
-                this.temporaryDebugSelectArea(selectedArea);
+                // console.log(`Selected Area: ${JSON.stringify(selectedArea)}`);
     
                 try {
                     const screenshotUrl = await this.captureScreenshot();
                     const croppedImageUrl = await this.processSelectedArea(screenshotUrl, selectedArea);
-    
-                    // // Display the selected portion
-                    // const img = document.createElement('img');
-                    // img.src = croppedImageUrl;
-                    // document.body.appendChild(img);
-    
-                    // // Optionally, add a button to download the image
-                    // const downloadButton = document.createElement('button');
-                    // downloadButton.innerText = 'Download Image';
-                    // downloadButton.onclick = () => this.downloadImage(croppedImageUrl, 'selected-area.png');
-                    // document.body.appendChild(downloadButton);
     
                     resolve(this.OCROutput[0]);
                 } catch (error) {
@@ -190,7 +178,6 @@ class OCRHelper {
         return new Promise((resolve, reject) => {
             const image = new Image();
             image.src = screenshotUrl;
-            this.temporaryDownloadImage(screenshotUrl, 'preProcess')
             image.onload = () => {
                 const canvas = document.createElement('canvas');
                 const context = canvas.getContext('2d');
@@ -215,7 +202,6 @@ class OCRHelper {
                 canvas.height = selectedArea.height;
                 context.drawImage(image, selectedArea.x, selectedArea.y, selectedArea.width, selectedArea.height, 0, 0, selectedArea.width, selectedArea.height);
                 const croppedImageUrl = canvas.toDataURL('image/png');
-                this.temporaryDownloadImage(croppedImageUrl, 'postProcess')
                 try {
                     await this.processImage(croppedImageUrl);
                     resolve();
@@ -227,7 +213,8 @@ class OCRHelper {
         });
     }    
 
-    temporaryDownloadImage(dataUrl, namePrefix) {
+    downloadImage(dataUrl, namePrefix) {
+        // This is for debug purposes only, outlived usefulness, may delete
         const now = new Date().getMilliseconds();
         const a = document.createElement('a');
         a.href = dataUrl;
@@ -238,7 +225,8 @@ class OCRHelper {
         document.body.removeChild(a);
     }
 
-    temporaryDebugSelectArea(selectedArea) {
+    borderSelectedArea(selectedArea) {
+        // This is for debug purposes only, outlived usefulness, may delete
         const borderOverlay = document.createElement('div');
         borderOverlay.style.position = 'fixed';
         borderOverlay.style.border = '4px solid red';

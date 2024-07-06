@@ -29,3 +29,7 @@
 -   include licenses for Tesseract.
 
 -   make text in TextScroller selectable
+
+-   prevent scrollerOverlay from being moved out of the screen.
+
+-   in TextScroller border protection, add a shut off for Auto-play
