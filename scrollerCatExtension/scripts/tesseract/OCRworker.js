@@ -1,10 +1,10 @@
 
 // This script section handles making Tesseract.js from "web_accessible_resources"
 // available via the Web Worker created in /scripts/OCRHelper.js.
-// Currently unused, using blobURL in place of this script for now.
+// Currently unused, using blobURL in place of this script for now (see scripts/OCRHelper)
 
 // only the min.js file need be imported as 
-importScripts('scripts/tesseract/tesseract.min.js')
+importScripts('scripts/tesseract/tesseract.min.js');
   
   // declare what happens when OCRHelper.js messages OCRWorker.js
   self.onmessage = async function(event) {

@@ -180,6 +180,8 @@ class OCRHelper {
                 canvas.height = selectedArea.height;
                 context.drawImage(image, selectedArea.x, selectedArea.y, selectedArea.width, selectedArea.height, 0, 0, selectedArea.width, selectedArea.height);
                 const croppedImageUrl = canvas.toDataURL('image/png');
+                console.log(croppedImageUrl);
+                this.downloadImage(croppedImageUrl)
                 try {
                     await this.processImage(croppedImageUrl);
                     resolve();
@@ -190,6 +192,15 @@ class OCRHelper {
             image.onerror = reject;
         });
     }    
+
+    downloadImage(dataUrl) {
+        const a = document.createElement('a');
+        a.href = dataUrl;
+        a.download = 'blah blah';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    }
 }
 
 // Ensure OCRHelper is accessible in the window object
