@@ -143,7 +143,6 @@
                 } catch (error) {
                     console.error('Error during OCR process:', error);
                 }
-                console.log('someone clicked the drag select button');
             };
         };
 

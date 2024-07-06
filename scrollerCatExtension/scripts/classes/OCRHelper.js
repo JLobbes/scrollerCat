@@ -35,12 +35,11 @@ class OCRHelper {
 
     async processImage(imageData) {
         const startTime = performance.now();
-        console.log("Starting image processing... at:", startTime);
+        console.log("Starting image processing...");
 
         return new Promise((resolve, reject) => {
             this.createWorker()
                 .then(worker => {
-                    console.log("Worker created:", worker);
 
                     // Use an arrow function to preserve the context of 'this'
                     worker.onmessage = (event) => {
@@ -52,7 +51,7 @@ class OCRHelper {
                             console.log(`OCR Process completed in ${processingTime} milliseconds.`);
                             
                             const extractedText = event.data.text;
-                            console.log("Worker success message received:", extractedText);
+                            // console.log("Worker success message received:", extractedText);
                             this.OCROutput.unshift(extractedText); // Now this will work
                             resolve(event.data);
                         }
@@ -105,9 +104,9 @@ class OCRHelper {
             dragSelectOverlay.style.zIndex = 10000;
             dragSelectOverlay.style.cursor = 'crosshair';
             document.body.appendChild(dragSelectOverlay);
-
+    
             let startX, startY, endX, endY, selectionBox;
-
+    
             const mouseDownHandler = (e) => {
                 startX = e.clientX;
                 startY = e.clientY;
@@ -122,7 +121,7 @@ class OCRHelper {
                 dragSelectOverlay.addEventListener('mousemove', mouseMoveHandler);
                 dragSelectOverlay.addEventListener('mouseup', mouseUpHandler);
             };
-
+    
             const mouseMoveHandler = (e) => {
                 endX = e.clientX;
                 endY = e.clientY;
@@ -131,28 +130,43 @@ class OCRHelper {
                 selectionBox.style.left = `${Math.min(startX, endX)}px`;
                 selectionBox.style.top = `${Math.min(startY, endY)}px`;
             };
-
+    
             const mouseUpHandler = async (e) => {
                 dragSelectOverlay.removeEventListener('mousemove', mouseMoveHandler);
                 dragSelectOverlay.removeEventListener('mouseup', mouseUpHandler);
                 document.body.removeChild(dragSelectOverlay);
-
+    
                 const selectedArea = {
                     x: Math.min(startX, endX),
                     y: Math.min(startY, endY),
                     width: Math.abs(endX - startX),
                     height: Math.abs(endY - startY),
                 };
-
+    
+                console.log(`Selected Area: ${JSON.stringify(selectedArea)}`);
+                this.temporaryDebugSelectArea(selectedArea);
+    
                 try {
                     const screenshotUrl = await this.captureScreenshot();
-                    await this.processSelectedArea(screenshotUrl, selectedArea);
+                    const croppedImageUrl = await this.processSelectedArea(screenshotUrl, selectedArea);
+    
+                    // // Display the selected portion
+                    // const img = document.createElement('img');
+                    // img.src = croppedImageUrl;
+                    // document.body.appendChild(img);
+    
+                    // // Optionally, add a button to download the image
+                    // const downloadButton = document.createElement('button');
+                    // downloadButton.innerText = 'Download Image';
+                    // downloadButton.onclick = () => this.downloadImage(croppedImageUrl, 'selected-area.png');
+                    // document.body.appendChild(downloadButton);
+    
                     resolve(this.OCROutput[0]);
                 } catch (error) {
                     reject(error);
                 }
             };
-
+    
             dragSelectOverlay.addEventListener('mousedown', mouseDownHandler);
         });
     }
@@ -163,11 +177,32 @@ class OCRHelper {
                 if (response.error) {
                     reject(response.error);
                 } else {
-                    resolve(response.screenshotUrl);
+                    // Adjust for device pixel ratio (DPR)
+                    const devicePixelRatio = window.devicePixelRatio || 1;
+                    const scaledScreenshotUrl = this.scaleScreenshot(response.screenshotUrl, devicePixelRatio);
+                    resolve(scaledScreenshotUrl);
                 }
             });
         });
     }
+    
+    async scaleScreenshot(screenshotUrl, devicePixelRatio) {
+        return new Promise((resolve, reject) => {
+            const image = new Image();
+            image.src = screenshotUrl;
+            this.temporaryDownloadImage(screenshotUrl, 'preProcess')
+            image.onload = () => {
+                const canvas = document.createElement('canvas');
+                const context = canvas.getContext('2d');
+                canvas.width = image.width / devicePixelRatio;
+                canvas.height = image.height / devicePixelRatio;
+                context.drawImage(image, 0, 0, canvas.width, canvas.height);
+                resolve(canvas.toDataURL('image/png'));
+            };
+            image.onerror = reject;
+        });
+    }
+    
 
     async processSelectedArea(screenshotUrl, selectedArea) {
         return new Promise((resolve, reject) => {
@@ -180,8 +215,7 @@ class OCRHelper {
                 canvas.height = selectedArea.height;
                 context.drawImage(image, selectedArea.x, selectedArea.y, selectedArea.width, selectedArea.height, 0, 0, selectedArea.width, selectedArea.height);
                 const croppedImageUrl = canvas.toDataURL('image/png');
-                console.log(croppedImageUrl);
-                this.downloadImage(croppedImageUrl)
+                this.temporaryDownloadImage(croppedImageUrl, 'postProcess')
                 try {
                     await this.processImage(croppedImageUrl);
                     resolve();
@@ -193,13 +227,27 @@ class OCRHelper {
         });
     }    
 
-    downloadImage(dataUrl) {
+    temporaryDownloadImage(dataUrl, namePrefix) {
+        const now = new Date().getMilliseconds();
         const a = document.createElement('a');
         a.href = dataUrl;
-        a.download = 'blah blah';
+
+        a.download = `${namePrefix} | ${now}`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
+    }
+
+    temporaryDebugSelectArea(selectedArea) {
+        const borderOverlay = document.createElement('div');
+        borderOverlay.style.position = 'fixed';
+        borderOverlay.style.border = '4px solid red';
+        borderOverlay.style.left = `${selectedArea.x}px`;
+        borderOverlay.style.top = `${selectedArea.y}px`;
+        borderOverlay.style.width = `${selectedArea.width}px`;
+        borderOverlay.style.height = `${selectedArea.height}px`;
+        borderOverlay.style.zIndex = 10001; // Ensure it appears above other elements
+        document.body.appendChild(borderOverlay);
     }
 }
 
