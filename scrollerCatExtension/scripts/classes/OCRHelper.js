@@ -1,6 +1,7 @@
 class OCRHelper {
     constructor() {
         this.OCROutput = [];
+        this.highlightBoxes = [];
         console.log("OCRHelper initialized");
     }
 
@@ -33,15 +34,15 @@ class OCRHelper {
         });
     }
 
-    async processImage(imageData) {
+    async processImage(imageData, selectedArea) {
         const startTime = performance.now();
         console.log("Starting image processing...");
-
+    
         return new Promise((resolve, reject) => {
             this.createWorker()
                 .then(worker => {
-
-                    // Use an arrow function to preserve the context of 'this'
+    
+                    // use an arrow function to preserve the context of 'this'
                     worker.onmessage = (event) => {
                         if (event.data.error) {
                             console.error("Worker error message received:", event.data.error);
@@ -49,15 +50,18 @@ class OCRHelper {
                         } else if (event.data.text) {
                             const processingTime = performance.now() - startTime;
                             console.log(`OCR Process completed in ${processingTime} milliseconds.`);
-                            
-                            const extractedText = event.data.text;
-                            // console.log("Worker success message received:", extractedText);
-                            this.OCROutput.unshift(extractedText); // Now this will work
+    
+                            // remove low confidence words (i.e., gibberish from images);
+                            const filteredOutput = this.filterForOCRConfidence(event.data);
+                            this.OCROutput.unshift(filteredOutput); 
+
+                            this.addHighlights(filteredOutput, selectedArea);
+    
                             resolve(event.data);
                         }
                     };
-
-                    console.log("Sending image to worker");
+    
+                    // console.log("Sending image to worker");
                     worker.postMessage({ imageData, type: 'dataURL' });
                 })
                 .catch(error => {
@@ -66,6 +70,7 @@ class OCRHelper {
                 });
         });
     }
+    
 
     async createWorker() {
         // the below script is a mimic of scripts/tesseract/OCRworker.js, may resolve bug later, for now works with blobURL
@@ -149,7 +154,8 @@ class OCRHelper {
                     const screenshotUrl = await this.captureScreenshot();
                     const croppedImageUrl = await this.processSelectedArea(screenshotUrl, selectedArea);
     
-                    resolve(this.OCROutput[0]);
+                    const extractedText = this.OCROutput[0].text;
+                    resolve(extractedText);
                 } catch (error) {
                     reject(error);
                 }
@@ -203,7 +209,7 @@ class OCRHelper {
                 context.drawImage(image, selectedArea.x, selectedArea.y, selectedArea.width, selectedArea.height, 0, 0, selectedArea.width, selectedArea.height);
                 const croppedImageUrl = canvas.toDataURL('image/png');
                 try {
-                    await this.processImage(croppedImageUrl);
+                    await this.processImage(croppedImageUrl, selectedArea);
                     resolve();
                 } catch (error) {
                     reject(error);
@@ -213,13 +219,69 @@ class OCRHelper {
         });
     }    
 
+    addHighlights(tesseractOutput, selectedArea) {
+        // Parse the Tesseract output to get the bounding boxes
+        const words = tesseractOutput.boxes;
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    
+        let count = 1;
+        words.forEach(word => {
+            const { bbox } = word;
+            const { x0, y0, x1, y1 } = bbox;
+    
+            const adjustedX0 = x0 + selectedArea.x;
+            const adjustedY0 = y0 + selectedArea.y + scrollTop;
+            const adjustedX1 = x1 + selectedArea.x;
+            const adjustedY1 = y1 + selectedArea.y + scrollTop;
+    
+            const highlightBox = document.createElement('div');
+            highlightBox.className = 'tesseract-OCR-hightlights';
+            // highlightBox.id = word.text;
+            highlightBox.id = count;
+            count += 2; // 2 to account for the space between words in TextScroller.js wordMap
+            highlightBox.style.position = 'absolute';
+            highlightBox.style.left = `${adjustedX0}px`;
+            highlightBox.style.top = `${adjustedY0}px`;
+            highlightBox.style.width = `${adjustedX1 - adjustedX0}px`;
+            highlightBox.style.height = `${adjustedY1 - adjustedY0}px`;
+            highlightBox.style.backgroundColor = 'rgba(255, 255, 0, 0.3)'; // yellow for onw
+            highlightBox.style.zIndex = 9998; // Ensure it appears above other elements, but not scrollerOverlay
+    
+            document.body.appendChild(highlightBox);
+    
+            this.highlightBoxes.push(highlightBox);
+        });
+    }
+    
+    removeHighlights() {
+        const highlightBoxes = document.querySelectorAll('.tesseract-OCR-hightlights');
+        highlightBoxes.forEach(highlight => {
+            highlight.remove();
+        });
+    }
+
+    filterForOCRConfidence(tesseractOutput, confidenceThreshold = 40) {
+        const boxes = tesseractOutput.boxes.filter(word => word.confidence >= confidenceThreshold);
+        
+        let cleanText = "";
+        for (const word in boxes) {
+            const wordText = boxes[word].text;
+            cleanText += ` ${wordText}`;
+        }
+
+        return {
+            boxes: boxes,
+            text: cleanText,
+        };
+    }
+
     downloadImage(dataUrl, namePrefix) {
         // This is for debug purposes only, outlived usefulness, may delete
-        const now = new Date().getMilliseconds();
+        const now = new Date;
         const a = document.createElement('a');
         a.href = dataUrl;
 
-        a.download = `${namePrefix} | ${now}`;
+        a.download = `${namePrefix} | ${now.getHours}:${now.getMinutes}:${now.getSeconds}`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);

@@ -87,6 +87,7 @@
             }
 
             this.wordPostionMap_Object = this.getWordMap(); // Measure the text in spans
+            console.log(this.wordPostionMap_Object);
 
             this.scrollerText.innerHTML = ""; // Clear the newly measured spans as movement is resource
             this.scrollerText.textContent = this.userTextInput;

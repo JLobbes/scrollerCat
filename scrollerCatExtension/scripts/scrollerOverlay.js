@@ -137,6 +137,7 @@
             dragSelectButton.mainFunction = async () => {
                 scrollerOverlay.minimizeScrollerOverlay();
                 try {
+                    OCRHelper.removeHighlights();
                     const extractedText = await OCRHelper.initiateDragSelect();
                     scrollerOverlay.textScroller.handleUserTextInput(extractedText);
                     scrollerOverlay.maximizeScrollerOverlay();
