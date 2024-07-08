@@ -70,6 +70,9 @@
             document.addEventListener("touchend", delayedAssessBoundaries);
             document.addEventListener("mouseup", delayedAssessBoundaries);
             document.addEventListener("keyup", delayedAssessBoundaries);
+
+            // scripts/OCRHelper.js listeners
+            document.addEventListener("scrollToWord", this.scrollToWord.bind(this))
         }
 
         setInitialText(text) {
@@ -146,7 +149,7 @@
             this.assessRightBoundaryWords();
             this.assessLeftBoundaryWords();
 
-            // this.printVisibleWords();
+            this.getCentermostWord();
         }
 
         assessRightBoundaryWords() {
@@ -301,6 +304,36 @@
                 return wordData;
             });
         }
+
+        getCentermostWord() {
+            let centermostWord = null;
+            let minDistance = Infinity; // further than any word can be
+        
+            for (const key in this.visibleWords) {
+                if (Object.hasOwnProperty.call(this.visibleWords, key)) {
+                    const word = this.visibleWords[key];
+                    const wordIndex = parseInt(key, 10);
+        
+                    // Only consider odd-indexed words
+                    if (wordIndex % 2 !== 0) {
+                        const wordPosition = word.position + (word.width / 2);
+                        const distanceFromCenter = Math.abs(-this.currentScrollPosition - wordPosition);
+        
+                        if (distanceFromCenter < minDistance) {
+                            minDistance = distanceFromCenter;
+                            centermostWord = word;
+                        }
+                    }
+                }
+            }
+        
+            if (centermostWord) {
+                console.log(`Centermost word: ${centermostWord.text}`);
+            } else {
+                console.log('No centermost word found.');
+            }
+        }
+        
 
         printVisibleWords() {
             let wordsInView = "";
@@ -504,12 +537,18 @@
 
         centerText() {
             this.getCurrentScrollPosition(); // Update values of scrollerBoxCenter & scrollerTextLeft for accurate measurent.
-            const centeringAdjustment =
-                this.scrollerBoxCenter - this.scrollerTextLeft;
+            const centeringAdjustment = this.scrollerBoxCenter - this.scrollerTextLeft;
 
             // Update the translate property
             this.translate += centeringAdjustment;
             this.shiftPosition(this.translate);
+        }
+
+        scrollToWord(event) {
+            const wordId = event.detail.wordId;
+            const scrollPosition = -this.wordPostionMap_Object[wordId].position;
+            this.translate = scrollPosition;
+            this.shiftPosition(scrollPosition);
         }
 
         toggleAutoScroll() {

@@ -246,7 +246,10 @@ class OCRHelper {
             highlightBox.style.height = `${adjustedY1 - adjustedY0}px`;
             highlightBox.style.backgroundColor = 'rgba(255, 255, 0, 0.3)'; // yellow for onw
             highlightBox.style.zIndex = 9998; // Ensure it appears above other elements, but not scrollerOverlay
+            highlightBox.style.cursor = 'pointer';
     
+            this.addHighlightClickListener(highlightBox);
+
             document.body.appendChild(highlightBox);
     
             this.highlightBoxes.push(highlightBox);
@@ -257,6 +260,15 @@ class OCRHelper {
         const highlightBoxes = document.querySelectorAll('.tesseract-OCR-hightlights');
         highlightBoxes.forEach(highlight => {
             highlight.remove();
+        });
+    }
+
+    addHighlightClickListener(highlightBox) {
+        highlightBox.addEventListener('click', () => {
+            const event = new CustomEvent('scrollToWord', {
+                detail: { wordId: highlightBox.id }
+            });
+            document.dispatchEvent(event);
         });
     }
 
