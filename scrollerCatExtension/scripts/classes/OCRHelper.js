@@ -2,7 +2,13 @@ class OCRHelper {
     constructor() {
         this.OCROutput = [];
         this.highlightBoxes = [];
+        this.addEventListeners();
         console.log("OCRHelper initialized");
+
+    }
+
+    addEventListeners() {
+        document.addEventListener('currentWordReport', this.highlightTargetWord.bind(this));
     }
 
     async prepImage(url) {
@@ -237,14 +243,14 @@ class OCRHelper {
             const highlightBox = document.createElement('div');
             highlightBox.className = 'tesseract-OCR-hightlights';
             // highlightBox.id = word.text;
-            highlightBox.id = count;
+            highlightBox.id = `highlight-${count}`;
             count += 2; // 2 to account for the space between words in TextScroller.js wordMap
             highlightBox.style.position = 'absolute';
             highlightBox.style.left = `${adjustedX0}px`;
             highlightBox.style.top = `${adjustedY0}px`;
             highlightBox.style.width = `${adjustedX1 - adjustedX0}px`;
             highlightBox.style.height = `${adjustedY1 - adjustedY0}px`;
-            highlightBox.style.backgroundColor = 'rgba(255, 255, 0, 0.3)'; // yellow for onw
+            highlightBox.style.backgroundColor = 'rgba(226, 165, 230, 0.3)'; // yellow for onw
             highlightBox.style.zIndex = 9998; // Ensure it appears above other elements, but not scrollerOverlay
             highlightBox.style.cursor = 'pointer';
     
@@ -265,12 +271,37 @@ class OCRHelper {
 
     addHighlightClickListener(highlightBox) {
         highlightBox.addEventListener('click', () => {
+            const highlightId = highlightBox.id.split('-')[1];
             const event = new CustomEvent('scrollToWord', {
-                detail: { wordId: highlightBox.id }
+                detail: { wordId: highlightId }
             });
             document.dispatchEvent(event);
         });
     }
+
+    defaultColorHighlights() {
+        const highlightBoxes = document.querySelectorAll('.tesseract-OCR-hightlights');
+        highlightBoxes.forEach(highlight => {
+            highlight.style.backgroundColor = 'rgba(226, 165, 230, 0.4)';
+            highlight.style.border = '';
+        });
+    }
+
+    highlightTargetWord(event) {
+        try {
+            const targetId = event.detail.wordId;
+            const targetHighlight = document.querySelector(`#highlight-${targetId}`);
+            
+            this.defaultColorHighlights();
+            if (targetHighlight) {
+                targetHighlight.style.backgroundColor = 'rgba(71, 135, 237, 0.7)';
+                targetHighlight.style.border = '1px solid rgba(71, 135, 237, 1)';
+            } 
+        }
+        catch {
+            console.log('No highlights injected on the DOM yet');
+        }
+    }    
 
     filterForOCRConfidence(tesseractOutput, confidenceThreshold = 40) {
         const boxes = tesseractOutput.boxes.filter(word => word.confidence >= confidenceThreshold);

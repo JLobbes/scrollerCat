@@ -17,6 +17,7 @@
             this.currentScrollPosition; // scrollerBoxLeft relative to center-line
             this.wordPostionMap_Object;
             this.visibleWords = {};
+            this.centermostWord = null;
 
             // Styling variables
             this.scrollerBoxWidth = 95; // %
@@ -64,7 +65,9 @@
 
             // Boundary Assessment & Protection with delay
             const delayedAssessBoundaries = () => {
-                setTimeout(() => this.assessBoundaries(), 200); // Adjust the delay time (in milliseconds) as needed
+                setTimeout(() => this.assessBoundaries(), 200); 
+                setTimeout(() => this.assessBoundaries(), 400); 
+                setTimeout(() => this.assessBoundaries(), 600); 
             };
 
             document.addEventListener("touchend", delayedAssessBoundaries);
@@ -72,7 +75,7 @@
             document.addEventListener("keyup", delayedAssessBoundaries);
 
             // scripts/OCRHelper.js listeners
-            document.addEventListener("scrollToWord", this.scrollToWord.bind(this))
+            document.addEventListener("scrollToWord", this.scrollToWord.bind(this));
         }
 
         setInitialText(text) {
@@ -149,7 +152,10 @@
             this.assessRightBoundaryWords();
             this.assessLeftBoundaryWords();
 
+            
+            // Rough optimization of centermost word reporting
             this.getCentermostWord();
+            this.reportCentermostWord();            
         }
 
         assessRightBoundaryWords() {
@@ -306,7 +312,7 @@
         }
 
         getCentermostWord() {
-            let centermostWord = null;
+            this.centermostWord = null;
             let minDistance = Infinity; // further than any word can be
         
             for (const key in this.visibleWords) {
@@ -321,19 +327,26 @@
         
                         if (distanceFromCenter < minDistance) {
                             minDistance = distanceFromCenter;
-                            centermostWord = word;
+                            this.centermostWord = word;
                         }
                     }
                 }
             }
         
-            if (centermostWord) {
-                console.log(`Centermost word: ${centermostWord.text}`);
+            if (this.centermostWord) {
+                console.log(`Centermost word: ${this.centermostWord.text}`);
+                return this.centermostWord;
             } else {
                 console.log('No centermost word found.');
             }
         }
         
+        reportCentermostWord() {
+            const currentWordReport = new CustomEvent('currentWordReport', {
+                detail: { wordId: this.centermostWord.index }
+            });
+            document.dispatchEvent(currentWordReport);
+        }
 
         printVisibleWords() {
             let wordsInView = "";
@@ -546,9 +559,14 @@
 
         scrollToWord(event) {
             const wordId = event.detail.wordId;
-            const scrollPosition = -this.wordPostionMap_Object[wordId].position;
+            const wordData = this.wordPostionMap_Object[wordId];
+            const scrollPosition = -(wordData.position +(wordData.width / 2));
             this.translate = scrollPosition;
             this.shiftPosition(scrollPosition);
+
+            setTimeout(() => { this.assessBoundaries(); }, 333);
+            setTimeout(() => { this.assessBoundaries(); }, 666);
+            setTimeout(() => { this.assessBoundaries(); }, 999);
         }
 
         toggleAutoScroll() {
@@ -566,11 +584,20 @@
                 this.applyAutoScrollTransition();
                 this.shiftPosition(this.translate);
             }, this.frameRate); // frameRate is not FPS, but ms between animation
+
+            if(this.autoScrollInterval) {
+                this.assessBoundaryInterval = setInterval(() => {
+                    this.assessBoundaries();
+                }, 250);
+            }
         }
 
         stopAutoScroll() {
             clearInterval(this.autoScrollInterval);
             this.autoScrollInterval = null;
+
+            clearInterval(this.assessBoundaryInterval);
+            this.assessBoundaryInterval = null;
         }
     }
 
