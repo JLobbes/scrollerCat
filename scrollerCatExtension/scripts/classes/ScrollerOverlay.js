@@ -48,22 +48,24 @@
             link1.href = "scrollerOverlay.css";
             head.appendChild(link1);
 
-            const link2 = document.createElement("link");
-			link2.rel = "preconnect";
-			link2.href = "https://fonts.googleapis.com";
-			head.appendChild(link2);
+            // The following 3 links are to use the Noto-Serif Traditional Chinese font from the web
+            // They are commented out to avoid CDN content policy issues on some sites.
+            // This may be remedied after the minimum viable produce (English) is complete.
+                // const link2 = document.createElement("link");
+                // link2.rel = "preconnect";
+                // link2.href = "https://fonts.googleapis.com";
+                // head.appendChild(link2);
 
-			const link3 = document.createElement("link");
-			link3.rel = "preconnect";
-            link3.href = "https://fonts.gstatic.com";
-            link3.crossOrigin = "anonymous";
-            head.appendChild(link3);
+                // const link3 = document.createElement("link");
+                // link3.rel = "preconnect";
+                // link3.href = "https://fonts.gstatic.com";
+                // link3.crossOrigin = "anonymous";
+                // head.appendChild(link3);
 
-            const link4 = document.createElement("link");
-            link4.rel = "stylesheet";
-            link4.href =
-                "https://fonts.googleapis.com/css2?family=Noto+Serif+TC&display=swap";
-            head.appendChild(link4);
+                // const link4 = document.createElement("link");
+                // link4.rel = "stylesheet";
+                // link4.href = "https://fonts.googleapis.com/css2?family=Noto+Serif+TC&display=swap";
+                // head.appendChild(link4);
 
             // Create HTML structure
             const overlayHarness = document.createElement("div");
