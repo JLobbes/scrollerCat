@@ -13,14 +13,9 @@
     // avoid polluting the global namespace of the window object.
 
     try {
-        const existingOverlay = document.getElementById(
-            "scrollerOverlayContainer"
-        );
+        const existingOverlay = document.getElementById("scrollerOverlayContainer");
         if (existingOverlay) {
-            console.log(
-                "An overlay has already been injected. New injection haulted."
-            );
-            return;
+            existingOverlay.style.display = 'block';
         }
     } catch (e) {
         console.error(e.message);

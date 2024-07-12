@@ -150,7 +150,7 @@
             textScroller.classList.add("text-wrapper");
 
             const text = document.createElement("div");
-            text.id = "text";
+            text.id = "scrollerText";
             text.classList.add("unselectable");
             text.innerHTML = `<!-- IMPORTANT NOTE: This is filled when TextScroller object is instantiated. However, the '...' below forces font-family styles to be active before the first mapping of text. Others, text will be incorretly meeasured -->`;
 
@@ -424,6 +424,12 @@
 
         closeScrollerOverlay() {
             this.scrollerOverlayHTML.remove();
+
+            // an admitted hardcoded dependency, shoud be removed if time permits
+            const highlightBoxes = document.querySelectorAll('.tesseract-OCR-hightlights');
+                highlightBoxes.forEach(highlight => {
+                highlight.remove();
+            });
         }
 
         minimizeScrollerOverlay() {

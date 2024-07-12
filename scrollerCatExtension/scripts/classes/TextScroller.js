@@ -6,7 +6,7 @@
         constructor(isIphone) {
             // Main DOM items
             this.scrollerBox = document.getElementsByClassName("text-wrapper")[0];
-            this.scrollerText = document.getElementById("text");
+            this.scrollerText = document.getElementById("scrollerText");
             this.intialText = "...";
             this.userTextInput = "...";
             this.wordPositionMap_Array = [];
@@ -129,21 +129,21 @@
         }
 
         assessBoundaries() {
+            const scrollerOverlay = document.getElementById('scrollerOverlayContainer');
+            if(!scrollerOverlay) return;
+
             this.getCurrentScrollPosition();
-            const halfScrollerBoxWidth =
-                this.scrollerBox.getBoundingClientRect().width / 2;
-            const scrollerTextWidth =
-                this.scrollerText.getBoundingClientRect().width;
+
+            this.scrollerBox = document.getElementsByClassName("text-wrapper")[0];
+            this.scrollerText = document.getElementById("scrollerText");
+            const halfScrollerBoxWidth = this.scrollerBox.getBoundingClientRect().width / 2;
+            const scrollerTextWidth = this.scrollerText.getBoundingClientRect().width;
 
             const rightBoundary = halfScrollerBoxWidth - 50;
-            if (this.currentScrollPosition > rightBoundary) {
-                this.reboundPositionTo(0);
-            }
+            if (this.currentScrollPosition > rightBoundary) { this.reboundPositionTo(0);}
 
             const leftBoundary = -scrollerTextWidth - halfScrollerBoxWidth + 50;
-            if (this.currentScrollPosition < leftBoundary) {
-                this.reboundPositionTo(-scrollerTextWidth);
-            }
+            if (this.currentScrollPosition < leftBoundary) { this.reboundPositionTo(-scrollerTextWidth); }
 
             // Ensure there are words visible
             if (Object.keys(this.visibleWords).length === 0) {
@@ -168,10 +168,8 @@
                 } // Exit if no data to assess
 
                 this.getCurrentScrollPosition();
-                const halfScreenWidth =
-                    this.scrollerBox.getBoundingClientRect().width / 2;
-                const rightBoundary =
-                    -this.currentScrollPosition + halfScreenWidth;
+                const halfScreenWidth = this.scrollerBox.getBoundingClientRect().width / 2;
+                const rightBoundary = -this.currentScrollPosition + halfScreenWidth;
                 const rightMostWordKey = Object.keys(currentWords).at(-1);
                 const rightMostWord = currentWords[rightMostWordKey];
                 const { index, position, width } = rightMostWord;
@@ -206,10 +204,8 @@
                 if (Object.keys(currentWords).length === 0) break; // Exit if no data to assess
 
                 this.getCurrentScrollPosition();
-                const halfScreenWidth =
-                    this.scrollerBox.getBoundingClientRect().width / 2;
-                const leftBoundary =
-                    -this.currentScrollPosition - halfScreenWidth;
+                const halfScreenWidth = this.scrollerBox.getBoundingClientRect().width / 2;
+                const leftBoundary = -this.currentScrollPosition - halfScreenWidth;
                 const leftMostWordKey = Object.keys(currentWords).at(0);
                 const leftMostWord = currentWords[leftMostWordKey];
                 const { index, position, width } = leftMostWord;

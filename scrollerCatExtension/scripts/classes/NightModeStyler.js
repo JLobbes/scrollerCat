@@ -5,7 +5,7 @@
         constructor() {
             this.nightModeSpecificSelectors = [    
                 '#scrollerOverlayContainer',    
-                '.text', 
+                '#scrollerText', 
                 '.text-wrapper', 
                 '.button-panel textarea',
             ];
