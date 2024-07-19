@@ -2,13 +2,46 @@ class OCRHelper {
     constructor() {
         this.OCROutput = [];
         this.highlightBoxes = [];
+        this.errorLog = []; 
         this.addEventListeners();
+        this.testFunction();
+        this.sitePermitsOCR;
         console.log("OCRHelper initialized");
-
     }
 
     addEventListeners() {
         document.addEventListener('currentWordReport', this.highlightTargetWord.bind(this));
+
+        window.addEventListener('error', (event) => {
+            console.error("Global error caught:", event.message);
+            this.sitePermitsOCR = false;
+            console.log("Site Permits OCR:", this.sitePermitsOCR);
+            if (event.message.includes('violates the following Content Security Policy')) {
+                this.errorLog.push("CSP issue: " + event.message);
+            }
+        });
+
+        window.addEventListener('unhandledrejection', (event) => {
+            console.error("Unhandled promise rejection caught:", event.reason);
+            if (event.reason && event.reason.message && event.reason.message.includes('violates the following Content Security Policy')) {
+                this.errorLog.push("CSP issue: " + event.reason.message);
+            }
+        });
+    }
+
+    async testFunction() {
+        // throw a junk image through the OCR pathway to see if the visited site 
+        // blocks OCR for any reason (e.g., CDN call, CSP source origin issues, Blob URLs, etc.)
+
+        try {
+            const screenshotUrl = await this.captureScreenshot();
+            await this.processSelectedArea(screenshotUrl, { x: 0, y: 0, width: 100, height: 100 });
+            this.sitePermitsOCR = true;
+            console.log("Site Permits OCR:", this.sitePermitsOCR);
+        } catch (error) {
+            this.sitePermitsOCR = false;
+            console.log("Site Permits OCR:", this.sitePermitsOCR);
+        }
     }
 
     async prepImage(url) {
@@ -47,60 +80,62 @@ class OCRHelper {
         return new Promise((resolve, reject) => {
             this.createWorker()
                 .then(worker => {
-    
-                    // use an arrow function to preserve the context of 'this'
                     worker.onmessage = (event) => {
                         if (event.data.error) {
                             console.error("Worker error message received:", event.data.error);
+                            this.errorLog.push(event.data.error);
                             reject(event.data.error);
                         } else if (event.data.text) {
                             const processingTime = performance.now() - startTime;
                             console.log(`OCR Process completed in ${processingTime} milliseconds.`);
     
-                            // remove low confidence words (i.e., gibberish from images);
                             const filteredOutput = this.filterForOCRConfidence(event.data);
                             this.OCROutput.unshift(filteredOutput); 
-
                             this.addHighlights(filteredOutput, selectedArea);
     
                             resolve(event.data);
                         }
                     };
     
-                    // console.log("Sending image to worker");
                     worker.postMessage({ imageData, type: 'dataURL' });
                 })
                 .catch(error => {
                     console.error("Failed to create worker:", error);
+                    this.errorLog.push(error.message);
                     reject(error);
                 });
         });
-    }
-    
+    }    
 
     async createWorker() {
-        // the below script is a mimic of scripts/tesseract/OCRworker.js, may resolve bug later, for now works with blobURL
-        const workerScript = `
-            importScripts('${chrome.runtime.getURL('scripts/tesseract/tesseract.min.js')}');
-            self.onmessage = async function(event) {
-                const { imageData, type } = event.data;
-                try {
-                    let result;
-                    if (type === 'dataURL') {
-                        result = await Tesseract.recognize(imageData, 'eng', {
-                            logger: m => self.postMessage({ progress: m.progress })
-                        });
+        try {
+            const workerScript = `
+                importScripts('${chrome.runtime.getURL('scripts/tesseract/tesseract.min.js')}');
+                self.onmessage = async function(event) {
+                    const { imageData, type } = event.data;
+                    try {
+                        let result;
+                        if (type === 'dataURL') {
+                            result = await Tesseract.recognize(imageData, 'eng', {
+                                logger: m => self.postMessage({ progress: m.progress })
+                            });
+                        }
+                        self.postMessage({ text: result.data.text, boxes: result.data.words });
+                    } catch (error) {
+                        self.postMessage({ error: error.message });
                     }
-                    self.postMessage({ text: result.data.text, boxes: result.data.words });
-                } catch (error) {
-                    self.postMessage({ error: error.message });
-                }
-            };
-        `;
-        const blob = new Blob([workerScript], { type: 'application/javascript' });
-        const blobURL = URL.createObjectURL(blob);
-        return new Worker(blobURL);
+                };
+            `;
+            const blob = new Blob([workerScript], { type: 'application/javascript' });
+            const blobURL = URL.createObjectURL(blob);
+            return new Worker(blobURL);
+        } catch (error) {
+            console.error("Worker creation failed due to CSP issue:", error);
+            this.errorLog.push(error.message);
+            throw new Error("CSP issue: " + error.message);
+        }
     }
+    
 
     initiateDragSelect() {
         return new Promise((resolve, reject) => {
@@ -153,9 +188,7 @@ class OCRHelper {
                     width: Math.abs(endX - startX),
                     height: Math.abs(endY - startY),
                 };
-    
-                // console.log(`Selected Area: ${JSON.stringify(selectedArea)}`);
-    
+        
                 try {
                     const screenshotUrl = await this.captureScreenshot();
                     const croppedImageUrl = await this.processSelectedArea(screenshotUrl, selectedArea);
@@ -175,6 +208,7 @@ class OCRHelper {
         return new Promise((resolve, reject) => {
             chrome.runtime.sendMessage({ action: 'captureVisibleTab' }, (response) => {
                 if (response.error) {
+                    this.errorLog.push(response.error);
                     reject(response.error);
                 } else {
                     // Adjust for device pixel ratio (DPR)
@@ -242,7 +276,6 @@ class OCRHelper {
     
             const highlightBox = document.createElement('div');
             highlightBox.className = 'tesseract-OCR-hightlights';
-            // highlightBox.id = word.text;
             highlightBox.id = `highlight-${count}`;
             count += 2; // 2 to account for the space between words in TextScroller.js wordMap
             highlightBox.style.position = 'absolute';

@@ -93,7 +93,7 @@
             }
 
             this.wordPostionMap_Object = this.getWordMap(); // Measure the text in spans
-            console.log(this.wordPostionMap_Object);
+            // console.log(this.wordPostionMap_Object);
 
             this.scrollerText.innerHTML = ""; // Clear the newly measured spans as movement is resource
             this.scrollerText.textContent = this.userTextInput;
@@ -330,10 +330,10 @@
             }
         
             if (this.centermostWord) {
-                console.log(`Centermost word: ${this.centermostWord.text}`);
+                // console.log(`Centermost word: ${this.centermostWord.text}`);
                 return this.centermostWord;
             } else {
-                console.log('No centermost word found.');
+                // console.log('No centermost word found.');
             }
         }
         

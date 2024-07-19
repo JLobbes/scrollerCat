@@ -15,7 +15,7 @@
     try {
         const existingOverlay = document.getElementById("scrollerOverlayContainer");
         if (existingOverlay) {
-            existingOverlay.style.display = 'block';
+            return;
         }
     } catch (e) {
         console.error(e.message);
