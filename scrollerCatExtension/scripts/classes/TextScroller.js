@@ -338,10 +338,15 @@
         }
         
         reportCentermostWord() {
-            const currentWordReport = new CustomEvent('currentWordReport', {
-                detail: { wordId: this.centermostWord.index }
-            });
-            document.dispatchEvent(currentWordReport);
+            try {
+                const currentWordReport = new CustomEvent('currentWordReport', {
+                    detail: { wordId: this.centermostWord.index }
+                });
+                document.dispatchEvent(currentWordReport);
+            }
+            catch(error) {
+                console.log(error.message);
+            }
         }
 
         printVisibleWords() {

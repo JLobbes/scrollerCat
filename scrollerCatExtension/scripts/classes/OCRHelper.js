@@ -6,6 +6,11 @@ class OCRHelper {
         this.addEventListeners();
         this.testFunction();
         this.sitePermitsOCR;
+        this.knownGlobalErrors = [
+            'violates the following Content Security Policy',
+            "Failed to execute 'importScripts'",
+            'Refused to load the script',
+        ];
         console.log("OCRHelper initialized");
     }
 
@@ -13,13 +18,15 @@ class OCRHelper {
         document.addEventListener('currentWordReport', this.highlightTargetWord.bind(this));
 
         window.addEventListener('error', (event) => {
-            console.error("Global error caught:", event.message);
-            this.sitePermitsOCR = false;
-            this.hideDragSelectButton();
-            console.log("Site Permits OCR:", this.sitePermitsOCR);
-            if (event.message.includes('violates the following Content Security Policy')) {
-                this.errorLog.push("CSP issue: " + event.message);
-            }
+            this.knownGlobalErrors.forEach((errorSnippet) => {
+                if (event.message.includes(errorSnippet)) {
+                    console.error("Global error caught:", event.message);
+                    this.sitePermitsOCR = false;
+                    this.hideDragSelectButton();
+                    this.errorLog.push("CSP issue: " + event.message);
+                    console.log("Site Permits OCR:", this.sitePermitsOCR);
+                }
+            });
         });
 
         window.addEventListener('unhandledrejection', (event) => {

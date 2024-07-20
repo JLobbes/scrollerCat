@@ -19,6 +19,7 @@
         "js": [
           "scripts/classes/Button.js",
           "scripts/classes/ButtonPanel.js",
+          "scripts/classes/MiniTextScraper.js",
           "scripts/classes/NightModeStyler.js",
           "scripts/classes/OCRHelper.js",
           "scripts/classes/PasteZoneStyler.js",
