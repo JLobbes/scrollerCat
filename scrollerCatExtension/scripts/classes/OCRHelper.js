@@ -15,6 +15,7 @@ class OCRHelper {
         window.addEventListener('error', (event) => {
             console.error("Global error caught:", event.message);
             this.sitePermitsOCR = false;
+            this.hideDragSelectButton();
             console.log("Site Permits OCR:", this.sitePermitsOCR);
             if (event.message.includes('violates the following Content Security Policy')) {
                 this.errorLog.push("CSP issue: " + event.message);
@@ -40,8 +41,15 @@ class OCRHelper {
             console.log("Site Permits OCR:", this.sitePermitsOCR);
         } catch (error) {
             this.sitePermitsOCR = false;
+            this.hideDragSelectButton();
             console.log("Site Permits OCR:", this.sitePermitsOCR);
         }
+    }
+
+    hideDragSelectButton() {
+        // this prevents the user from triggering OCR on sites that don't permit it
+        // attempting to use OCR won't crash anything but is a nuisance.
+        document.getElementById('dragSelect').remove();
     }
 
     async prepImage(url) {

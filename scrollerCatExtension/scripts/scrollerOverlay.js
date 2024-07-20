@@ -540,6 +540,7 @@
         };
 
         scrollerOverlay.prepareForInjection();
+
     }
 
     injectScrollerOverlay();
