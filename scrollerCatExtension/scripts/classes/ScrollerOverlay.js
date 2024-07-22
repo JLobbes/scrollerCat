@@ -446,6 +446,7 @@
 
             this.scrollerOverlayHTML.style.width = `140px`;
             this.scrollerOverlayHTML.style.height = `20px`;
+            this.scrollerOverlayHTML.style.boxSizing = `content-box`;
 
             // clear unwanted styling
             this.scrollerOverlayHTML.style.left = ``;
