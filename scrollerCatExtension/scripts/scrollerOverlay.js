@@ -52,7 +52,7 @@
 
             this.toolbar.createButton("scrapeText");
             const curvingArrowIcon = chrome.runtime.getURL(
-                "images/curving-arrow-icon.png"
+                "images/highlightText-icon.png"
             );
             this.toolbar.buttonContainers["scrapeText"].setIconData(
                 curvingArrowIcon,
