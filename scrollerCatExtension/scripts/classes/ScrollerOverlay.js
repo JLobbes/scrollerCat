@@ -78,7 +78,7 @@
             const toolbarOpenCloseContainer = document.createElement("div");
 
             const toolbarOpenButton = document.createElement("button");
-            toolbarOpenButton.classList.add("open");
+            toolbarOpenButton.classList.add("openButtonPanel");
 
             const toolbarOpenImg = document.createElement("img");
             const hammerIcon = chrome.runtime.getURL("images/hammer-icon.png");
@@ -90,7 +90,7 @@
             toolbarOpenButton.appendChild(toolbarOpenImg);
 
             const toolbarCloseButton = document.createElement("button");
-            toolbarCloseButton.classList.add("close", "hidden");
+            toolbarCloseButton.classList.add("closeButtonPanel", "hidden");
 
             const toolbarCloseImg = document.createElement("img");
             const hammerIconActive = chrome.runtime.getURL(
@@ -165,7 +165,7 @@
             const settingsOpenCloseContainer = document.createElement("div");
 
             const settingsOpenButton = document.createElement("button");
-            settingsOpenButton.classList.add("open");
+            settingsOpenButton.classList.add("openButtonPanel");
 
             const settingsOpenImg = document.createElement("img");
             const settingGearIcon = chrome.runtime.getURL(
@@ -179,7 +179,7 @@
             settingsOpenButton.appendChild(settingsOpenImg);
 
             const settingsCloseButton = document.createElement("button");
-            settingsCloseButton.classList.add("close", "hidden");
+            settingsCloseButton.classList.add("closeButtonPanel", "hidden");
 
             const settingsCloseImg = document.createElement("img");
             const settingGearIconActive = chrome.runtime.getURL(

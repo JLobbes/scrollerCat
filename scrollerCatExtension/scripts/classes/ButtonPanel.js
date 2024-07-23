@@ -8,8 +8,8 @@
     
             // to stay
             this.panel = document.getElementById(panelId);
-            this.openPanelButton = this.panel.querySelector('.open');
-            this.closePanelButton = this.panel.querySelector('.close');
+            this.openPanelButton = this.panel.querySelector('.openButtonPanel');
+            this.closePanelButton = this.panel.querySelector('.closeButtonPanel');
             
             this.draggedItem;
             
