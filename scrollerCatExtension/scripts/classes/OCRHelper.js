@@ -45,6 +45,7 @@ class OCRHelper {
             const screenshotUrl = await this.captureScreenshot();
             await this.processSelectedArea(screenshotUrl, { x: 0, y: 0, width: 100, height: 100 });
             this.sitePermitsOCR = true;
+            this.removeHighlights();
             console.log("Site Permits OCR:", this.sitePermitsOCR);
         } catch (error) {
             this.sitePermitsOCR = false;

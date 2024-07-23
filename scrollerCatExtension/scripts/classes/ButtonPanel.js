@@ -4,7 +4,7 @@
 
 (function() {
     class ButtonPanel {
-        constructor(panelId, parent) {
+        constructor(panelId) {
     
             // to stay
             this.panel = document.getElementById(panelId);

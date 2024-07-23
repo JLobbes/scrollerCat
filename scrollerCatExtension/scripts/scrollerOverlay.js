@@ -30,7 +30,7 @@
         };
 
         scrollerOverlay.prepareToolbar = function () {
-            this.toolbar = new window.ButtonPanel("toolbar", this);
+            this.toolbar = new window.ButtonPanel("scrollerCatToolbar", this);
 
             this.toolbar.createButton("centerText");
             const centerTextIcon = chrome.runtime.getURL(

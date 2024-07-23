@@ -72,7 +72,7 @@
             overlayHarness.id = "scrollerOverlayContainer";
 
             const toolbarContainer = document.createElement("div");
-            toolbarContainer.id = "toolbar";
+            toolbarContainer.id = "scrollerCatToolbar";
             toolbarContainer.classList.add("button-panel");
 
             const toolbarOpenCloseContainer = document.createElement("div");
