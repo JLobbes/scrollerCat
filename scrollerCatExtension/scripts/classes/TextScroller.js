@@ -140,10 +140,24 @@
             const scrollerTextWidth = this.scrollerText.getBoundingClientRect().width;
 
             const rightBoundary = halfScrollerBoxWidth - 50;
-            if (this.currentScrollPosition > rightBoundary) { this.reboundPositionTo(0);}
+            if (this.currentScrollPosition > rightBoundary) { 
+                this.reboundPositionTo(0);
+            }
 
             const leftBoundary = -scrollerTextWidth - halfScrollerBoxWidth + 50;
-            if (this.currentScrollPosition < leftBoundary) { this.reboundPositionTo(-scrollerTextWidth); }
+            if (this.currentScrollPosition < leftBoundary) { 
+                this.reboundPositionTo(-scrollerTextWidth); 
+                
+                // When autoscroll hits left boundary, message must be sent out to /scripts/scrollerOverlay.js 
+                // to trigger advanceState() for the read (i.e., "play") Button. This ensures the 
+                // icon and state change together rather than state alone. 
+                if(this.autoScrollInterval) {
+                    const autoScrollRebound = new CustomEvent('autoScrollRebound', {
+                        // no details required
+                    });
+                    document.dispatchEvent(autoScrollRebound);
+                }
+            }
 
             // Ensure there are words visible
             if (Object.keys(this.visibleWords).length === 0) {
@@ -155,7 +169,7 @@
             
             // Rough optimization of centermost word reporting
             this.getCentermostWord();
-            this.reportCentermostWord();            
+            this.reportCentermostWord();
         }
 
         assessRightBoundaryWords() {
@@ -376,7 +390,7 @@
 
         reboundPositionTo(targetScrollPosition) {
             this.endDrag();
-            this.stopAutoScroll();
+            // this.stopAutoScroll();
             this.applySmoothTransition();
             this.getCurrentScrollPosition();
             this.scrollerText.style.transform = `translateX(${targetScrollPosition}px)`;
@@ -593,10 +607,10 @@
             }
         }
 
-        stopAutoScroll() {
+        stopAutoScroll(fromRebound) {
             clearInterval(this.autoScrollInterval);
             this.autoScrollInterval = null;
-
+            
             clearInterval(this.assessBoundaryInterval);
             this.assessBoundaryInterval = null;
         }

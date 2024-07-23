@@ -73,7 +73,7 @@
             );
             const playIcon = chrome.runtime.getURL("images/play-icon.png");
             this.toolbar.buttonContainers["read"].addState(
-                "play",
+                "scrollerCatPlay",
                 playIcon,
                 "Play icon to start auto-scrollArrow curving towards textScroller to indicate text will pushed to textScroller.",
                 true
@@ -86,6 +86,10 @@
             playPauseButton.mainFunction = () => {
                 this.textScroller.toggleAutoScroll();
             };
+            document.addEventListener('autoScrollRebound', () => {
+                playPauseButton.advanceState();
+                // advanceState() includes the mainFunction code
+            });
 
             const centerTextButton = this.toolbar.buttonContainers["centerText"];
             centerTextButton.mainFunction = () => {
