@@ -27,6 +27,7 @@
 
             // Minimizize/Maximize Logic
             this.minimized = false;
+            this.fullScreen = false;
         }
 
         queryForIphone() {
@@ -182,14 +183,11 @@
             settingsCloseButton.classList.add("closeButtonPanel", "hidden");
 
             const settingsCloseImg = document.createElement("img");
-            const settingGearIconActive = chrome.runtime.getURL(
-                "images/spinning-setting-gear-icon.gif"
-            );
+            const settingGearIconActive = chrome.runtime.getURL("images/spinning-setting-gear-icon.gif");
             settingsCloseImg.id = "settingsIconActive";
             settingsCloseImg.src = settingGearIconActive;
             settingsCloseImg.classList.add("unselectable");
-            settingsCloseImg.alt =
-                "Spinning gear icon to indicate setting are open";
+            settingsCloseImg.alt = "Spinning gear icon to indicate setting are open";
 
             settingsCloseButton.appendChild(settingsCloseImg);
 
@@ -203,19 +201,13 @@
             const settingsExternalDividerIcon = document.createElement("img");
             settingsExternalDividerIcon.src = dividerIcon;
 
-            const settingsExternalDividerContainer =
-                document.createElement("div");
+            const settingsExternalDividerContainer = document.createElement("div");
             settingsExternalDividerContainer.classList.add("button-divider");
-            settingsExternalDividerContainer.appendChild(
-                settingsExternalDividerIcon
-            );
+            settingsExternalDividerContainer.appendChild(settingsExternalDividerIcon);
 
-            settingsExternalDivider.appendChild(
-                settingsExternalDividerContainer
-            );
+            settingsExternalDivider.appendChild(settingsExternalDividerContainer);
 
-            const settingsNestedButtonsContainer =
-                document.createElement("div");
+            const settingsNestedButtonsContainer = document.createElement("div");
             settingsNestedButtonsContainer.classList.add("nested-buttons");
 
             const settingsInternalDivider = document.createElement("div");
@@ -229,16 +221,11 @@
             const settingsInternalDividerIcon = document.createElement("img");
             settingsInternalDividerIcon.src = dividerIcon;
 
-            const settingsInternalDividerContainer =
-                document.createElement("div");
+            const settingsInternalDividerContainer = document.createElement("div");
             settingsInternalDividerContainer.classList.add("button-divider");
-            settingsInternalDividerContainer.appendChild(
-                settingsInternalDividerIcon
-            );
+            settingsInternalDividerContainer.appendChild(settingsInternalDividerIcon);
 
-            settingsInternalDivider.appendChild(
-                settingsInternalDividerContainer
-            );
+            settingsInternalDivider.appendChild(settingsInternalDividerContainer);
             settingsNestedButtonsContainer.appendChild(settingsInternalDivider);
 
             settingsContainer.appendChild(settingsOpenCloseContainer);
@@ -273,7 +260,7 @@
             // Add standard open, close, & minimize buttons to the scrollerOverlayContainer
             const minusButton = document.createElement("div");
             minusButton.classList.add("control-button");
-            minusButton.id = "minimizeButton";
+            minusButton.id = "minimizeOverlayButton";
             minusButton.textContent = "-";
             minusButton.addEventListener(
                 "click",
@@ -283,7 +270,7 @@
 
             const plusButton = document.createElement("div");
             plusButton.classList.add("control-button");
-            plusButton.id = "maximizeButton";
+            plusButton.id = "maximizeOverlayButton";
             plusButton.textContent = "+";
             plusButton.addEventListener(
                 "click",
@@ -435,98 +422,146 @@
         }
 
         minimizeScrollerOverlay() {
-            if (this.minimized) return;
-            this.minimized = true;
+            if (this.fullScreen) {
+                this.fullScreen = false;
 
-            const rect = this.scrollerOverlayHTML.getBoundingClientRect();
-            this.overlayStartWidth = rect.width;
-            this.overlayStartHeight = rect.height;
-            this.overlayStartLeft = rect.left;
-            this.overlayStartTop = rect.top;
+                // show hidden & disabled maximize control button
+                const maximizeButton = document.querySelector('#maximizeOverlayButton');
+                maximizeButton.style.display = '';
 
-            this.scrollerOverlayHTML.style.width = `140px`;
-            this.scrollerOverlayHTML.style.height = `20px`;
-            this.scrollerOverlayHTML.style.boxSizing = `content-box`;
+                // restore original styles
+                this.scrollerOverlayHTML.style.left = `${this.overlayStartLeft}px`;
+                this.scrollerOverlayHTML.style.top = `${this.overlayStartTop}px`;
+                this.scrollerOverlayHTML.style.width = `${this.overlayStartWidth - 10}px`; // must account for 10px border
+                this.scrollerOverlayHTML.style.height = `${this.overlayStartHeight - 10}px`; // must account for 10px border
+    
+                const textScroller = this.scrollerOverlayHTML.querySelector(".text-wrapper"); 
+                textScroller.style.border = "";
+    
+                const controlButtons = this.scrollerOverlayHTML.querySelectorAll(".control-button");
+                controlButtons.forEach((button) => {button.style.top = "3px";});
+    
+                const corners = this.scrollerOverlayHTML.querySelectorAll(".corner");
+                corners.forEach((corner) => { corner.style.display = ""; });
+    
+                const bumpers = this.scrollerOverlayHTML.querySelectorAll(".bumper");
+                bumpers.forEach((bumper) => {
+                    if (bumper.classList.contains("top")) { bumper.style.display = ""; }
+                    if (bumper.classList.contains("bottom")) { bumper.style.display = ""; }
+                });
+            } else if (!this.fullScreen && !this.minimized) {
+                this.minimized = true;
 
-            // clear unwanted styling
-            this.scrollerOverlayHTML.style.left = ``;
-            this.scrollerOverlayHTML.style.top = ``;
+                // hide temporarily disabled minimize control button
+                const minimizeButton = document.querySelector('#minimizeOverlayButton');
+                minimizeButton.style.display = 'none';
 
-            this.scrollerOverlayHTML.style.right = `0px`;
-            this.scrollerOverlayHTML.style.bottom = `0px`;
+                // move maximize right to occupy mimize control button position 
+                const maximizeButton = document.querySelector('#maximizeOverlayButton');
+                maximizeButton.style.right = '72px';
 
-            const textScroller =
-                this.scrollerOverlayHTML.querySelector(".text-wrapper");
-            textScroller.style.border = "none";
-
-            const controlButtons =
-                this.scrollerOverlayHTML.querySelectorAll(".control-button");
-            controlButtons.forEach((button) => {
-                button.style.top = "0px";
-            });
-
-            const corners =
-                this.scrollerOverlayHTML.querySelectorAll(".corner");
-            corners.forEach((corner) => {
-                corner.style.display = "none";
-            });
-
-            const bumpers =
-                this.scrollerOverlayHTML.querySelectorAll(".bumper");
-            bumpers.forEach((bumper) => {
-                if (bumper.classList.contains("top")) {
-                    bumper.style.display = "none";
-                }
-                if (bumper.classList.contains("bottom")) {
-                    bumper.style.display = "none";
-                }
-            });
+                // store styles
+                const rect = this.scrollerOverlayHTML.getBoundingClientRect();
+                this.overlayStartWidth = rect.width;
+                this.overlayStartHeight = rect.height;
+                this.overlayStartLeft = rect.left;
+                this.overlayStartTop = rect.top;
+    
+                this.scrollerOverlayHTML.style.width = `120px`;
+                this.scrollerOverlayHTML.style.height = `20px`;
+                this.scrollerOverlayHTML.style.boxSizing = `content-box`;
+    
+                // clear unwanted styling
+                this.scrollerOverlayHTML.style.left = ``;
+                this.scrollerOverlayHTML.style.top = ``;
+    
+                this.scrollerOverlayHTML.style.right = `0px`;
+                this.scrollerOverlayHTML.style.bottom = `0px`;
+    
+                const textScroller = this.scrollerOverlayHTML.querySelector(".text-wrapper");
+                textScroller.style.border = "none";
+    
+                const controlButtons = this.scrollerOverlayHTML.querySelectorAll(".control-button");
+                controlButtons.forEach((button) => {
+                    button.style.top = "0px";
+                });
+    
+                const corners = this.scrollerOverlayHTML.querySelectorAll(".corner");
+                corners.forEach((corner) => {
+                    corner.style.display = "none";
+                });
+    
+                const bumpers = this.scrollerOverlayHTML.querySelectorAll(".bumper");
+                bumpers.forEach((bumper) => {
+                    if (bumper.classList.contains("top")) { bumper.style.display = "none"; }
+                    if (bumper.classList.contains("bottom")) { bumper.style.display = "none"; }
+                });
+            }
         }
 
         maximizeScrollerOverlay() {
-            if (!this.minimized) return;
-            this.minimized = false;
+            if (this.minimized) {
+                this.minimized = false;
 
-            // clear left and top positioning
-            this.scrollerOverlayHTML.style.right = ``;
-            this.scrollerOverlayHTML.style.bottom = ``;
+                // show hidden & disabled minimize control button
+                const minimizeButton = document.querySelector('#minimizeOverlayButton');
+                minimizeButton.style.display = '';
 
-            // restore original styles
-            this.scrollerOverlayHTML.style.left = `${this.overlayStartLeft}px`;
-            this.scrollerOverlayHTML.style.top = `${this.overlayStartTop}px`;
-            this.scrollerOverlayHTML.style.width = `${
-                this.overlayStartWidth - 10
-            }px`; // must account for 10px border
-            this.scrollerOverlayHTML.style.height = `${
-                this.overlayStartHeight - 10
-            }px`; // must account for 10px border
+                // move maximize back to original spot 
+                const maximizeButton = document.querySelector('#maximizeOverlayButton');
+                maximizeButton.style.right = '';
+    
+                // clear left and top positioning
+                this.scrollerOverlayHTML.style.right = ``;
+                this.scrollerOverlayHTML.style.bottom = ``;
+    
+                // restore original styles
+                this.scrollerOverlayHTML.style.left = `${this.overlayStartLeft}px`;
+                this.scrollerOverlayHTML.style.top = `${this.overlayStartTop}px`;
+                this.scrollerOverlayHTML.style.width = `${this.overlayStartWidth - 10}px`; // must account for 10px border
+                this.scrollerOverlayHTML.style.height = `${this.overlayStartHeight - 10}px`; // must account for 10px border
+    
+                const textScroller = this.scrollerOverlayHTML.querySelector(".text-wrapper"); 
+                textScroller.style.border = "";
+    
+                const controlButtons = this.scrollerOverlayHTML.querySelectorAll(".control-button");
+                controlButtons.forEach((button) => {button.style.top = "3px";});
+    
+                const corners = this.scrollerOverlayHTML.querySelectorAll(".corner");
+                corners.forEach((corner) => { corner.style.display = ""; });
+    
+                const bumpers = this.scrollerOverlayHTML.querySelectorAll(".bumper");
+                bumpers.forEach((bumper) => {
+                    if (bumper.classList.contains("top")) {
+                        bumper.style.display = "";
+                    }
+                    if (bumper.classList.contains("bottom")) {
+                        bumper.style.display = "";
+                    }
+                });
+            } else if (!this.minimized && !this.fullScreen) {
+                this.fullScreen = true;
+                console.log("fullscreen:", this.fullScreen);
 
-            const textScroller =
-                this.scrollerOverlayHTML.querySelector(".text-wrapper");
-            textScroller.style.border = "";
+                // hide temporarily disabled maximize control button
+                const maximizeButton = document.querySelector('#maximizeOverlayButton');
+                maximizeButton.style.display = 'none';
 
-            const controlButtons =
-                this.scrollerOverlayHTML.querySelectorAll(".control-button");
-            controlButtons.forEach((button) => {
-                button.style.top = "3px";
-            });
+                // store original styles
+                const rect = this.scrollerOverlayHTML.getBoundingClientRect();
+                this.overlayStartWidth = rect.width;
+                this.overlayStartHeight = rect.height;
+                this.overlayStartLeft = rect.left;
+                this.overlayStartTop = rect.top;
 
-            const corners =
-                this.scrollerOverlayHTML.querySelectorAll(".corner");
-            corners.forEach((corner) => {
-                corner.style.display = "";
-            });
+                // implement fullScreen styling
+                this.scrollerOverlayHTML.style.width = `${window.innerWidth - 10}px`; // must account for 10px border
+                this.scrollerOverlayHTML.style.height = `${window.innerHeight - 10}px`; // must account for 10px border
+                this.scrollerOverlayHTML.style.boxSizing = `content-box`;
 
-            const bumpers =
-                this.scrollerOverlayHTML.querySelectorAll(".bumper");
-            bumpers.forEach((bumper) => {
-                if (bumper.classList.contains("top")) {
-                    bumper.style.display = "";
-                }
-                if (bumper.classList.contains("bottom")) {
-                    bumper.style.display = "";
-                }
-            });
+                this.scrollerOverlayHTML.style.left = `0px`;
+                this.scrollerOverlayHTML.style.top = `0px`;
+            };
         }
     }
 

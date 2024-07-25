@@ -161,29 +161,29 @@
   background: rgba(158, 64, 64, 0.8); 
 }
 
-#minimizeButton {
+#minimizeOverlayButton {
   width: 20px;
   right: 72px;
 }
 
-#minimizeButton:hover {
-  background: rgba(27, 95, 141, 0.7); 
+#minimizeOverlayButton:hover {
+  background: rgba(42, 185, 204, 0.7); 
 }
 
-#scrollerOverlayContainer.night-mode #minimizeButton:hover {
-  background: rgba(34, 151, 167, 0.7); 
+#scrollerOverlayContainer.night-mode #minimizeOverlayButton:hover {
+  background: rgba(42, 185, 204, 0.7); 
 }
 
-#maximizeButton {
+#maximizeOverlayButton {
   width: 20px;
   right: 94px;
 }
 
-#maximizeButton:hover {
+#maximizeOverlayButton:hover {
   background: rgba(17, 195, 121, 0.7); 
 }
 
-#scrollerOverlayContainer.night-mode #maximizeButton:hover {
+#scrollerOverlayContainer.night-mode #maximizeOverlayButton:hover {
   background: rgba(17, 195, 121, 0.7); 
 }
 
