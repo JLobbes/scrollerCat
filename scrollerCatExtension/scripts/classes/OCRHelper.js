@@ -164,7 +164,8 @@ class OCRHelper {
             dragSelectOverlay.style.height = '100vh';
             dragSelectOverlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
             dragSelectOverlay.style.zIndex = 10000;
-            dragSelectOverlay.style.cursor = 'crosshair';
+            const crosshairCursor = chrome.runtime.getURL('/images/crosshair-icon-40.png');
+            dragSelectOverlay.style.cursor = `url(${crosshairCursor}), crosshair`;
             document.body.appendChild(dragSelectOverlay);
     
             let startX, startY, endX, endY, selectionBox;
