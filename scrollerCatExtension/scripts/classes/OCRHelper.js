@@ -39,7 +39,7 @@ class OCRHelper {
 
     async testFunction() {
         // throw a junk image through the OCR pathway to see if the visited site 
-        // blocks OCR for any reason (e.g., CDN call, CSP source origin issues, Blob URLs, etc.)
+        // blocks OCR for any relevant reason (e.g., CDN call, CSP source origin issues, Blob URLs, etc.)
 
         try {
             const screenshotUrl = await this.captureScreenshot();

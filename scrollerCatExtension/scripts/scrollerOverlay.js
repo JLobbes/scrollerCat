@@ -99,12 +99,25 @@
             const OCRHelper = new window.OCRHelper();
             const dragSelectButton = this.toolbar.buttonContainers["dragSelect"];
             dragSelectButton.mainFunction = async () => {
-                scrollerOverlay.minimizeScrollerOverlay();
+                OCRHelper.removeHighlights();
+
+                const fullScreen = scrollerOverlay.fullScreen;
+                if(fullScreen) {
+                    scrollerOverlay.minimizeScrollerOverlay();
+                    scrollerOverlay.minimizeScrollerOverlay();
+                } else {
+                    scrollerOverlay.minimizeScrollerOverlay();
+                }
+
                 try {
-                    OCRHelper.removeHighlights();
                     const extractedText = await OCRHelper.initiateDragSelect();
                     scrollerOverlay.textScroller.handleUserTextInput(extractedText);
-                    scrollerOverlay.maximizeScrollerOverlay();
+                    if(fullScreen) {
+                        scrollerOverlay.maximizeScrollerOverlay();
+                        scrollerOverlay.maximizeScrollerOverlay();
+                    } else {
+                        scrollerOverlay.maximizeScrollerOverlay();
+                    }
                 } catch (error) {
                     console.error('Error during OCR process:', error);
                 }
@@ -114,10 +127,40 @@
             const scrapeTextButton = this.toolbar.buttonContainers["scrapeText"];
             scrapeTextButton.mainFunction = async () => {
                 OCRHelper.removeHighlights();
-                scrollerOverlay.minimizeScrollerOverlay();
-                const scrapedText = await MiniTextScraper.initiateScrape();
-                scrollerOverlay.textScroller.handleUserTextInput(scrapedText);
-                scrollerOverlay.maximizeScrollerOverlay();
+
+                const fullScreen = scrollerOverlay.fullScreen;
+                if(fullScreen) {
+                    scrollerOverlay.minimizeScrollerOverlay();
+                    scrollerOverlay.minimizeScrollerOverlay();
+                } else {
+                    scrollerOverlay.minimizeScrollerOverlay();
+                }
+
+                try {
+                    const scrapedText = await MiniTextScraper.initiateScrape();
+                    if (scrapedText == undefined) throw Error('Site prevents use of document.currentSelection() for external use');
+                    scrollerOverlay.textScroller.handleUserTextInput(scrapedText);
+
+                    if(fullScreen) {
+                        scrollerOverlay.maximizeScrollerOverlay();
+                        scrollerOverlay.maximizeScrollerOverlay();
+                    } else {
+                        scrollerOverlay.maximizeScrollerOverlay();
+                    }
+
+                } catch (error) {
+                    console.error('Error during text Scrape process:', error);
+                    scrollerOverlay.textScroller.handleUserTextInput(' : ( Sorry, this site prevents the use of this function. Close scrollerCat and try again if you believe this was a mistake.');
+                    const scrapeTextButton = document.querySelector('#scrapeText');
+                    scrapeTextButton.style.display = 'none';
+
+                    if(fullScreen) {
+                        scrollerOverlay.maximizeScrollerOverlay();
+                        scrollerOverlay.maximizeScrollerOverlay();
+                    } else {
+                        scrollerOverlay.maximizeScrollerOverlay();
+                    }
+                }
             }
         };
 
