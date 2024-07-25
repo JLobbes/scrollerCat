@@ -167,7 +167,7 @@
 }
 
 #minimizeButton:hover {
-  background: rgba(34, 151, 167, 0.7); 
+  background: rgba(27, 95, 141, 0.7); 
 }
 
 #scrollerOverlayContainer.night-mode #minimizeButton:hover {
@@ -180,11 +180,11 @@
 }
 
 #maximizeButton:hover {
-  background: rgba(18, 165, 118, 0.7); 
+  background: rgba(17, 195, 121, 0.7); 
 }
 
 #scrollerOverlayContainer.night-mode #maximizeButton:hover {
-  background: rgba(18, 165, 118, 0.7); 
+  background: rgba(17, 195, 121, 0.7); 
 }
 
 .text-wrapper {
