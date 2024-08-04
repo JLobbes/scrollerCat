@@ -26,3 +26,7 @@ Installation:
 Start:
 
 - 2024 May 30
+
+Acknowledgements:
+
+- This project uses [Tesseract.js](https://github.com/naptha/tesseract.js) under the Apache License 2.0.

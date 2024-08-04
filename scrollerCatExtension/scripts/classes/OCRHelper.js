@@ -1,3 +1,8 @@
+/*
+ * This project uses Tesseract.js (https://github.com/naptha/tesseract.js)
+ * Licensed under the Apache License 2.0 (http://www.apache.org/licenses/LICENSE-2.0)
+ */
+
 class OCRHelper {
     constructor() {
         this.OCROutput = [];
