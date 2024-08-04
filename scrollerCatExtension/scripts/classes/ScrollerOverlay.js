@@ -302,6 +302,7 @@
 
         startDrag(e) {
             e.preventDefault(); // Prevent default behavior to avoid text selection and other issues
+            this.fullScreen = false;
             this.dragging = true;
             this.dragStartX = e.clientX;
             this.dragStartY = e.clientY;
