@@ -2,7 +2,7 @@
     "manifest_version": 3,
     "name": "ScrollerCat",
     "version": "1.0",
-    "description": "In-browser reading tool to make all text readable, using OCR.",
+    "description": "In-browser reading tool to make all text readable, using OCR locally.",
     "action": {
       "default_icon": {
         "48": "images/scrollerCat-headOnly-logo-48.png",
@@ -96,11 +96,7 @@
         "images/text-icon-smallest.png",
         "images/wider-icon.png",
         "images/widest-icon.png",
-        "scripts/tesseract/tesseract.min.js",
-        "scripts/tesseract/tesseract-core.wasm.js",
-        "scripts/tesseract/tesseract-core-simd.wasm.js",
-        "scripts/tesseract/tesseract-core.wasm",
-        "scripts/tesseract/OCRworker.js"
+        "scripts/tesseract/tesseract.min.js"
         ],
         "matches": ["<all_urls>"]
       }
